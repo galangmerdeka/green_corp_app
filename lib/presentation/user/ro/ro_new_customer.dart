@@ -27,6 +27,12 @@ class _RONewCustomerState extends State<RONewCustomer> {
     "P002",
     "P003",
   ];
+  List<String> _namaUsahaRO = [
+    "Hotel Aston",
+    "Hotel Horison",
+    "Hotel Ave Kalimantan",
+    "JCC International Hotel",
+  ];
   List<String> _dataKategori = [
     "Hotel",
     "Restoran",
@@ -50,6 +56,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
   String? _selectedIdPelangganRO;
   String? _selectedKategori;
   String? _selectedLokasiGudang;
+  String? _selectedNamaUsahaRO;
   String? _provinsi;
   String? _kota;
   String? _kecamatan;
@@ -92,7 +99,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
     final _code_screen = ModalRoute.of(context)!.settings.arguments as String;
     print("Code Screen : ${_code_screen}");
     return Scaffold(
-      appBar: AppBarCustom(context),
+      appBar: AppBarCustom(context, "Customer"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -219,13 +226,24 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       SizedBox(
                         height: 16,
                       ),
-                      TextFieldWithoutIcon(
-                        context,
-                        // hintText: "Nama Usaha",
-                        obsText: false,
-                        textController: _namaUsaha,
-                        label: "Nama Usaha",
-                      ),
+                      (_code_screen == "new" || _code_screen == "edit")
+                          ? TextFieldWithoutIcon(
+                              context,
+                              // hintText: "Nama Usaha",
+                              obsText: false,
+                              textController: _namaUsaha,
+                              label: "Nama Usaha",
+                            )
+                          : DropDown(
+                              itemList: _namaUsahaRO,
+                              labelField: "Nama Usaha",
+                              function: (value) {
+                                print("Nama Usaha : ${value}");
+                                setState(() {
+                                  _selectedNamaUsahaRO = value as String;
+                                });
+                              },
+                            ),
                       SizedBox(
                         height: 16,
                       ),
@@ -413,8 +431,10 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       ),
                       DropDown(
                         itemList: [
-                          'Item 1',
-                          'Item 2',
+                          'Jerigen 2',
+                          'Jerigen 4',
+                          'Jerigen 6',
+                          'Jerigen 8',
                         ],
                         labelField: "Kemasan",
                         function: (value) {
@@ -481,7 +501,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                                   );
                                   // print("Liter : ${_quantityLiter.toString()}");
                                   print(
-                                      "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(2)}");
+                                      "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
                                   return null;
                                 },
                               ),
