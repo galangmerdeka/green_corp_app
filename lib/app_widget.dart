@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/splash_screen.dart';
+import 'package:green_corp_app/presentation/user/driver/pickup_detail.dart';
 import 'package:green_corp_app/presentation/user/driver/task.dart';
 import 'package:green_corp_app/presentation/user/login_screen.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_history.dart';
@@ -37,6 +38,7 @@ class _AppWidgetState extends State<AppWidget> {
         RONewCustomer.routeName: (ctx) => RONewCustomer(),
         ROHistoryPage.routeName: (ctx) => ROHistoryPage(),
         Task.routeName: (ctx) => Task(),
+        PickupDetail.routeName: (ctx) => PickupDetail(),
       },
     );
   }

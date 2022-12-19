@@ -1,5 +1,5 @@
 class KonversiLtKg {
-  final double massaJenis = 3.14;
+  final double massaJenis = 0.138;
 
   double getKonversiLtToKg(int liter) {
     double result = massaJenis * liter;
