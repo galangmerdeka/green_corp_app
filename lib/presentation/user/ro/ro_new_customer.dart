@@ -97,7 +97,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
   @override
   Widget build(BuildContext context) {
     final _code_screen = ModalRoute.of(context)!.settings.arguments as String;
-    print("Code Screen : ${_code_screen}");
+    // print("Code Screen : ${_code_screen}");
     return Scaffold(
       appBar: AppBarCustom(context, "Customer"),
       body: SafeArea(
@@ -158,7 +158,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                               itemList: _pelangganRO,
                               labelField: "ID Pelanggan",
                               function: (value) {
-                                print("Kategori : ${value}");
+                                // print("Kategori : ${value}");
                                 setState(() {
                                   _selectedIdPelangganRO = value as String;
                                 });
@@ -204,7 +204,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         itemList: _dataKategori,
                         labelField: "Kategori",
                         function: (value) {
-                          print("Kategori : ${value}");
+                          // print("Kategori : ${value}");
                           setState(() {
                             _selectedKategori = value as String;
                           });
@@ -217,7 +217,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         itemList: _dataLokasiGudang,
                         labelField: "Lokasi Gudang",
                         function: (value) {
-                          print("Lokasi Gudang : ${value}");
+                          // print("Lokasi Gudang : ${value}");
                           setState(() {
                             _selectedLokasiGudang = value as String;
                           });
@@ -238,7 +238,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                               itemList: _namaUsahaRO,
                               labelField: "Nama Usaha",
                               function: (value) {
-                                print("Nama Usaha : ${value}");
+                                // print("Nama Usaha : ${value}");
                                 setState(() {
                                   _selectedNamaUsahaRO = value as String;
                                 });
@@ -290,7 +290,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Provinsi",
                         function: (value) {
-                          print("Provinsi : ${value}");
+                          // print("Provinsi : ${value}");
                           setState(() {
                             _provinsi = value as String;
                           });
@@ -308,7 +308,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Kota/Kabupaten",
                         function: (value) {
-                          print("Kota/Kabupaten : ${value}");
+                          // print("Kota/Kabupaten : ${value}");
                           setState(() {
                             _kota = value as String;
                           });
@@ -326,7 +326,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Kecamatan",
                         function: (value) {
-                          print("Kecamatan : ${value}");
+                          // print("Kecamatan : ${value}");
                           setState(() {
                             _kecamatan = value as String;
                           });
@@ -344,7 +344,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Kelurahan",
                         function: (value) {
-                          print("Kelurahan : ${value}");
+                          // print("Kelurahan : ${value}");
                           setState(() {
                             _kelurahan = value as String;
                           });
@@ -420,7 +420,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Jenis UCO",
                         function: (value) {
-                          print("Jenis UCO : ${value}");
+                          // print("Jenis UCO : ${value}");
                           setState(() {
                             _jenisUCO = value as String;
                           });
@@ -438,7 +438,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Kemasan",
                         function: (value) {
-                          print("Kemasan : ${value}");
+                          // print("Kemasan : ${value}");
                           setState(() {
                             _kemasan = value as String;
                           });
@@ -500,8 +500,8 @@ class _RONewCustomerState extends State<RONewCustomer> {
                                     },
                                   );
                                   // print("Liter : ${_quantityLiter.toString()}");
-                                  print(
-                                      "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
+                                  // print(
+                                  //     "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
                                   return null;
                                 },
                               ),

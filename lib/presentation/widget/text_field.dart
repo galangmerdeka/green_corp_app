@@ -9,9 +9,10 @@ Widget TextFieldWidget(
   required bool obsText,
   required TextEditingController textController,
   required String label,
-  // String? Function(String?)? validatorField,
+  String? Function(String?)? validatorField,
 }) {
   return TextFormField(
+    validator: validatorField,
     obscureText: obsText,
     controller: textController,
     style: secondaryTextStyle,

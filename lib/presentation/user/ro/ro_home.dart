@@ -142,7 +142,7 @@ class ROHome extends StatelessWidget {
           onTap: (_menuList[index]["is_active"] == false)
               ? null
               : () {
-                  print("${_menuList[index]["title"]} clicked");
+                  // print("${_menuList[index]["title"]} clicked");
                   Get.toNamed(
                     _menuList[index]["route"],
                     arguments: _menuList[index]["code"].toString(),

@@ -35,7 +35,7 @@ class _PickupDetailState extends State<PickupDetail> {
         await _imagePicker.pickImage(source: ImageSource.camera);
     image1 = File(_imagePicked!.path);
     setState(() {
-      print("image 1 path : ${image1}");
+      // print("image 1 path : ${image1}");
     });
   }
 
@@ -45,7 +45,7 @@ class _PickupDetailState extends State<PickupDetail> {
         await _imagePicker.pickImage(source: ImageSource.camera);
     image2 = File(_imagePicked!.path);
     setState(() {
-      print("image 2 path : ${image2}");
+      // print("image 2 path : ${image2}");
     });
   }
 

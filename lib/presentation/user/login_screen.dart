@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_corp_app/config/constant.dart';
+import 'package:green_corp_app/config/input_validation.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/widget/text_field.dart';
 import 'package:green_corp_app/theme.dart';
@@ -13,7 +14,7 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with InputValidation {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -62,22 +63,42 @@ class _LoginScreenState extends State<LoginScreen> {
                       // crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Username Field
-                        TextFieldWidget(context,
-                            iconField: Icons.person_rounded,
-                            // hintText: "NIK",
-                            obsText: false,
-                            textController: _usernameController,
-                            label: "NIK"),
+                        TextFieldWidget(
+                          context,
+                          iconField: Icons.person_rounded,
+                          // hintText: "NIK",
+                          obsText: false,
+                          textController: _usernameController,
+                          label: "NIK",
+                          validatorField: (value) {
+                            if (isUsernameValid(value!)) {
+                              return null;
+                            } else if (value.isEmpty) {
+                              return "Field NIK wajib diisi";
+                            }
+                            return "Nik minimal 3 karakter dan maksimal 8 karakter";
+                          },
+                        ),
                         SizedBox(
                           height: 34,
                         ),
                         // Password Field
-                        TextFieldWidget(context,
-                            iconField: Icons.lock_rounded,
-                            // hintText: "Password",
-                            obsText: true,
-                            textController: _passwordController,
-                            label: "Password"),
+                        TextFieldWidget(
+                          context,
+                          iconField: Icons.lock_rounded,
+                          // hintText: "Password",
+                          obsText: true,
+                          textController: _passwordController,
+                          label: "Password",
+                          validatorField: (value) {
+                            if (isPasswordValid(value!)) {
+                              return null;
+                            } else if (value.isEmpty) {
+                              return "Password wajib diisi";
+                            }
+                            return "Password minimal 5 karakter";
+                          },
+                        ),
                         SizedBox(
                           height: 50,
                         ),
@@ -86,7 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 60,
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.offAllNamed(Landing.routeName);
+                              if (_formKey.currentState!.validate()) {
+                                Get.offAllNamed(Landing.routeName);
+                              }
                             },
                             style: buttonStyleForForm.copyWith(
                               backgroundColor:

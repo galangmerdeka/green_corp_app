@@ -182,7 +182,7 @@ class _TaskState extends State<Task> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          print("Clicked");
+                                          // print("Clicked");
                                         },
                                         icon: Icon(
                                           Icons.access_time_filled_sharp,
@@ -239,7 +239,7 @@ class _TaskState extends State<Task> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          print("Clicked");
+                                          // print("Clicked");
                                         },
                                         icon: Icon(
                                           Icons.refresh_rounded,
