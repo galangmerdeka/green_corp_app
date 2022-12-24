@@ -1,5 +1,14 @@
+// import 'dart:convert';
+
+import 'dart:convert';
+// import 'dart:html';
+
+// import 'package:dio/dio.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:green_corp_app/domain/calculate/konversi_lt_kg.dart';
+import 'package:green_corp_app/model/province.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/dropdown.dart';
@@ -278,24 +287,51 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       SizedBox(
                         height: 16,
                       ),
-                      DropDown(
-                        itemList: [
-                          'DKI Jakarta',
-                          'Jawa Barat',
-                          'Jawa Tengah',
-                          'Jawa TImur',
-                          'Kalimantan Utara',
-                          'Kalimantan Selatan',
-                          'Kalimantan Barat'
-                        ],
-                        labelField: "Provinsi",
-                        function: (value) {
-                          // print("Provinsi : ${value}");
-                          setState(() {
-                            _provinsi = value as String;
-                          });
+                      DropdownSearch<Province>(
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: "Provinsi",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllProvince = data as List<dynamic>;
+                            var modelsProvince =
+                                Province.fromJsonList(listAllProvince);
+
+                            return modelsProvince;
+                          } catch (err) {
+                            print(err);
+                            return List<Province>.empty();
+                          }
                         },
+                        onChanged: (Province? data) {
+                          print(data!.name);
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 20,
+                                horizontal: 20,
+                              ),
+                              child: Text("${item.name}"),
+                            );
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
+
                       SizedBox(
                         height: 16,
                       ),

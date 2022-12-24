@@ -75,6 +75,7 @@ class _SignaturePageState extends State<SignaturePage> {
                             if (controller!.isNotEmpty) {
                               final signature = await exportSignature();
                               // Navigator.pop(context, signature);
+                              // dispose();
                               Get.back(result: signature, closeOverlays: true);
                             }
                           },
