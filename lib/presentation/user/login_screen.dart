@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_corp_app/config/constant.dart';
 import 'package:green_corp_app/config/input_validation.dart';
-import 'package:green_corp_app/domain/user/user.dart';
+// import 'package:green_corp_app/domain/user/user.dart';
 import 'package:green_corp_app/model/model_user.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/widget/text_field.dart';
@@ -17,15 +17,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with InputValidation {
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  // List<User>? dataUser;
-  List<Map<String, dynamic>> dataUser = [
-    {"nik": "12344", "password": "12345678", "role": "sales_ro"},
-    {"nik": "12345", "password": "12345678", "role": "driver"},
-  ];
+  loading() async {
+    Future.delayed(
+      Duration(seconds: 10),
+    );
+    isLoading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +116,32 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
                           width: double.infinity,
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                Get.offAllNamed(Landing.routeName);
+                                var getUser = await DUMMY_USER
+                                    .contains(_usernameController.text);
+                                if (getUser) {
+                                  Get.offAllNamed(Landing.routeName,
+                                      arguments: _usernameController.text);
+                                } else {
+                                  print("Cannot Find a User");
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        icon: Icon(
+                                          Icons.error_outline_rounded,
+                                          size: 34,
+                                          color: Colors.redAccent,
+                                        ),
+                                        title: Text(
+                                          "Cannot Find a User with ${_usernameController.text}",
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
                               }
                             },
                             style: buttonStyleForForm.copyWith(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:green_corp_app/model/model_user.dart';
 import 'package:green_corp_app/presentation/user/driver/task.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_home.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
@@ -12,11 +13,12 @@ class Landing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _user = ModalRoute.of(context)!.settings.arguments as String;
     final List<Map<String, dynamic>> _menuList = [
       {
         'title': 'ro',
         'url': "assets/icon/vector_1.png",
-        'is_active': true,
+        'is_active': (_user == "sales_ro") ? true : false,
       },
       {
         'title': 'penjualan',
@@ -36,7 +38,7 @@ class Landing extends StatelessWidget {
       {
         'title': 'driver',
         'url': "assets/icon/vector_5.png",
-        'is_active': true,
+        'is_active': (_user == "driver") ? true : false,
       },
     ];
     return Scaffold(

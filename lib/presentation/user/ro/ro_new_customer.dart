@@ -122,7 +122,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
   KonversiLtKg objKonversi = KonversiLtKg();
   @override
   Widget build(BuildContext context) {
-    final _code_screen = ModalRoute.of(context)!.settings.arguments as String;
+    final _codeScreen = ModalRoute.of(context)!.settings.arguments as String;
     // print("Code Screen : ${_code_screen}");
     return Scaffold(
       appBar: AppBarCustom(context, "Customer"),
@@ -172,7 +172,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                   ),
                   child: Column(
                     children: [
-                      (_code_screen == "new" || _code_screen == "edit")
+                      (_codeScreen == "new" || _codeScreen == "edit")
                           ? TextFieldWithoutIcon(
                               context,
                               // hintText: "ID Pelanggan",
@@ -252,7 +252,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       SizedBox(
                         height: 16,
                       ),
-                      (_code_screen == "new" || _code_screen == "edit")
+                      (_codeScreen == "new" || _codeScreen == "edit")
                           ? TextFieldWithoutIcon(
                               context,
                               // hintText: "Nama Usaha",
