@@ -6,6 +6,10 @@ import 'dart:convert';
 // import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:green_corp_app/config/constant.dart';
+import 'package:green_corp_app/model/districts.dart';
+import 'package:green_corp_app/model/regencies.dart';
+import 'package:green_corp_app/model/villages.dart';
 import 'package:http/http.dart' as http;
 import 'package:green_corp_app/domain/calculate/konversi_lt_kg.dart';
 import 'package:green_corp_app/model/province.dart';
@@ -17,6 +21,7 @@ import 'package:green_corp_app/presentation/widget/snackbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/text_field_without_icon.dart';
 import 'package:green_corp_app/theme.dart';
 import 'package:get/get.dart';
+import '../../widget/dropdown_decorator_props.dart';
 
 class RONewCustomer extends StatefulWidget {
   const RONewCustomer({super.key});
@@ -67,9 +72,13 @@ class _RONewCustomerState extends State<RONewCustomer> {
   String? _selectedLokasiGudang;
   String? _selectedNamaUsahaRO;
   String? _provinsi;
+  int? _provinsiID;
   String? _kota;
+  int? _kotaID;
   String? _kecamatan;
+  int? _kecamatanID;
   String? _kelurahan;
+  int? _kelurahanID;
   final _namaUsaha = TextEditingController();
   final _alamatDetail = TextEditingController();
   final _namaPJ = TextEditingController();
@@ -99,6 +108,14 @@ class _RONewCustomerState extends State<RONewCustomer> {
   void _updateIsSubmitted(value) {
     setState(() {
       _isSubmitted = value;
+    });
+  }
+
+  void _resetKota() {
+    setState(() {
+      if (_kota!.isNotEmpty) {
+        _kota = null;
+      }
     });
   }
 
@@ -288,17 +305,11 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         height: 16,
                       ),
                       DropdownSearch<Province>(
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: "Provinsi",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
+                        // clearButtonProps: ClearButtonProps(isVisible: true),
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Provinsi"),
                         asyncItems: (String filter) async {
-                          Uri url = Uri.parse(
-                              "http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json");
+                          Uri url = Uri.parse("${API_WILAYAH}provinces.json");
                           try {
                             var response = await http.get(url);
 
@@ -313,78 +324,155 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             return List<Province>.empty();
                           }
                         },
-                        onChanged: (Province? data) {
-                          print(data!.name);
+                        onChanged: (value) {
+                          setState(() {
+                            _provinsi = value!.name;
+                            _provinsiID = int.tryParse(value.id!);
+                          });
+                          // print("Provinsi ID: ${value!.id}");
+                          // if (value.isBlank!) {
+                          //   print("Provinsi ID: ${value!.id}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
                         },
                         popupProps: PopupPropsMultiSelection.modalBottomSheet(
                           showSelectedItems: false,
                           // showSearchBox: true,
                           itemBuilder: (context, item, isSelected) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 20,
-                                horizontal: 20,
-                              ),
-                              child: Text("${item.name}"),
-                            );
+                            return itemDropdownBuilder(item.name!);
                           },
                         ),
                         itemAsString: (item) => item.name!,
                       ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      DropdownSearch<Regencies>(
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Kota"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "${API_WILAYAH}regencies/${_provinsiID}.json");
+                          try {
+                            var response = await http.get(url);
 
-                      SizedBox(
-                        height: 16,
-                      ),
-                      DropDown(
-                        itemList: [
-                          'Jakarta Selatan',
-                          'Jakarta Utara',
-                          'Jakarta Selatan',
-                          'Jakarta Barat'
-                        ],
-                        labelField: "Kota/Kabupaten",
-                        function: (value) {
-                          // print("Kota/Kabupaten : ${value}");
-                          setState(() {
-                            _kota = value as String;
-                          });
+                            var data = json.decode(response.body);
+                            var listAllRegencies = data as List<dynamic>;
+                            var modelsRegencies =
+                                Regencies.fromJsonList(listAllRegencies);
+
+                            return modelsRegencies;
+                          } catch (err) {
+                            print(err);
+                            return List<Regencies>.empty();
+                          }
                         },
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      DropDown(
-                        itemList: [
-                          'Kemayoran',
-                          'Senen',
-                          'Gambir',
-                          'Cempaka Putih'
-                        ],
-                        labelField: "Kecamatan",
-                        function: (value) {
-                          // print("Kecamatan : ${value}");
+                        onChanged: (Regencies? data) {
                           setState(() {
-                            _kecamatan = value as String;
+                            _kota = data!.name;
+                            _kotaID = int.tryParse(data.id!);
                           });
+                          // if (data != null) {
+                          //   print("Kota ID : ${_kotaID}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
                         },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
                       SizedBox(
                         height: 16,
                       ),
-                      DropDown(
-                        itemList: [
-                          'Serdang',
-                          'Senen',
-                          'Gambir',
-                          'Cempaka Putih',
-                        ],
-                        labelField: "Kelurahan",
-                        function: (value) {
-                          // print("Kelurahan : ${value}");
-                          setState(() {
-                            _kelurahan = value as String;
-                          });
+                      DropdownSearch<Districts>(
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Kecamatan"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "${API_WILAYAH}districts/${_kotaID}.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllDistricts = data as List<dynamic>;
+                            var modelsRegencies =
+                                Districts.fromJsonList(listAllDistricts);
+
+                            return modelsRegencies;
+                          } catch (err) {
+                            print(err);
+                            return List<Districts>.empty();
+                          }
                         },
+                        onChanged: (data) {
+                          setState(() {
+                            _kecamatan = data!.name;
+                            _kecamatanID = int.tryParse(data.id!);
+                          });
+                          // if (data != null) {
+                          //   print("Kota ID : ${_kotaID}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      DropdownSearch<Villages>(
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Kelurahan"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "${API_WILAYAH}villages/${_kecamatanID}.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllVillages = data as List<dynamic>;
+                            var modelsRegencies =
+                                Villages.fromJsonList(listAllVillages);
+
+                            return modelsRegencies;
+                          } catch (err) {
+                            print(err);
+                            return List<Villages>.empty();
+                          }
+                        },
+                        onChanged: (data) {
+                          setState(() {
+                            _kelurahan = data!.name;
+                            _kelurahanID = int.tryParse(data.id!);
+                          });
+                          // if (data != null) {
+                          //   print("Kota ID : ${_kotaID}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
                       SizedBox(
                         height: 16,
@@ -611,6 +699,16 @@ class _RONewCustomerState extends State<RONewCustomer> {
           ),
         ),
       ),
+    );
+  }
+
+  Container itemDropdownBuilder(String item) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 20,
+      ),
+      child: Text("${item}"),
     );
   }
 }
