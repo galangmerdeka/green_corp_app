@@ -1,5 +1,18 @@
+// import 'dart:convert';
+
+import 'dart:convert';
+// import 'dart:html';
+
+// import 'package:dio/dio.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:green_corp_app/config/constant.dart';
+import 'package:green_corp_app/model/districts.dart';
+import 'package:green_corp_app/model/regencies.dart';
+import 'package:green_corp_app/model/villages.dart';
+import 'package:http/http.dart' as http;
 import 'package:green_corp_app/domain/calculate/konversi_lt_kg.dart';
+import 'package:green_corp_app/model/province.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/dropdown.dart';
@@ -8,6 +21,7 @@ import 'package:green_corp_app/presentation/widget/snackbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/text_field_without_icon.dart';
 import 'package:green_corp_app/theme.dart';
 import 'package:get/get.dart';
+import '../../widget/dropdown_decorator_props.dart';
 
 class RONewCustomer extends StatefulWidget {
   const RONewCustomer({super.key});
@@ -26,6 +40,12 @@ class _RONewCustomerState extends State<RONewCustomer> {
     "P001",
     "P002",
     "P003",
+  ];
+  List<String> _namaUsahaRO = [
+    "Hotel Aston",
+    "Hotel Horison",
+    "Hotel Ave Kalimantan",
+    "JCC International Hotel",
   ];
   List<String> _dataKategori = [
     "Hotel",
@@ -50,10 +70,15 @@ class _RONewCustomerState extends State<RONewCustomer> {
   String? _selectedIdPelangganRO;
   String? _selectedKategori;
   String? _selectedLokasiGudang;
+  String? _selectedNamaUsahaRO;
   String? _provinsi;
+  int? _provinsiID;
   String? _kota;
+  int? _kotaID;
   String? _kecamatan;
+  int? _kecamatanID;
   String? _kelurahan;
+  int? _kelurahanID;
   final _namaUsaha = TextEditingController();
   final _alamatDetail = TextEditingController();
   final _namaPJ = TextEditingController();
@@ -86,13 +111,21 @@ class _RONewCustomerState extends State<RONewCustomer> {
     });
   }
 
+  void _resetKota() {
+    setState(() {
+      if (_kota!.isNotEmpty) {
+        _kota = null;
+      }
+    });
+  }
+
   KonversiLtKg objKonversi = KonversiLtKg();
   @override
   Widget build(BuildContext context) {
-    final _code_screen = ModalRoute.of(context)!.settings.arguments as String;
-    print("Code Screen : ${_code_screen}");
+    final _codeScreen = ModalRoute.of(context)!.settings.arguments as String;
+    // print("Code Screen : ${_code_screen}");
     return Scaffold(
-      appBar: AppBarCustom(context),
+      appBar: AppBarCustom(context, "Customer"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -139,7 +172,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                   ),
                   child: Column(
                     children: [
-                      (_code_screen == "new" || _code_screen == "edit")
+                      (_codeScreen == "new" || _codeScreen == "edit")
                           ? TextFieldWithoutIcon(
                               context,
                               // hintText: "ID Pelanggan",
@@ -151,7 +184,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                               itemList: _pelangganRO,
                               labelField: "ID Pelanggan",
                               function: (value) {
-                                print("Kategori : ${value}");
+                                // print("Kategori : ${value}");
                                 setState(() {
                                   _selectedIdPelangganRO = value as String;
                                 });
@@ -197,7 +230,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         itemList: _dataKategori,
                         labelField: "Kategori",
                         function: (value) {
-                          print("Kategori : ${value}");
+                          // print("Kategori : ${value}");
                           setState(() {
                             _selectedKategori = value as String;
                           });
@@ -210,7 +243,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         itemList: _dataLokasiGudang,
                         labelField: "Lokasi Gudang",
                         function: (value) {
-                          print("Lokasi Gudang : ${value}");
+                          // print("Lokasi Gudang : ${value}");
                           setState(() {
                             _selectedLokasiGudang = value as String;
                           });
@@ -219,13 +252,24 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       SizedBox(
                         height: 16,
                       ),
-                      TextFieldWithoutIcon(
-                        context,
-                        // hintText: "Nama Usaha",
-                        obsText: false,
-                        textController: _namaUsaha,
-                        label: "Nama Usaha",
-                      ),
+                      (_codeScreen == "new" || _codeScreen == "edit")
+                          ? TextFieldWithoutIcon(
+                              context,
+                              // hintText: "Nama Usaha",
+                              obsText: false,
+                              textController: _namaUsaha,
+                              label: "Nama Usaha",
+                            )
+                          : DropDown(
+                              itemList: _namaUsahaRO,
+                              labelField: "Nama Usaha",
+                              function: (value) {
+                                // print("Nama Usaha : ${value}");
+                                setState(() {
+                                  _selectedNamaUsahaRO = value as String;
+                                });
+                              },
+                            ),
                       SizedBox(
                         height: 16,
                       ),
@@ -260,77 +304,175 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       SizedBox(
                         height: 16,
                       ),
-                      DropDown(
-                        itemList: [
-                          'DKI Jakarta',
-                          'Jawa Barat',
-                          'Jawa Tengah',
-                          'Jawa TImur',
-                          'Kalimantan Utara',
-                          'Kalimantan Selatan',
-                          'Kalimantan Barat'
-                        ],
-                        labelField: "Provinsi",
-                        function: (value) {
-                          print("Provinsi : ${value}");
-                          setState(() {
-                            _provinsi = value as String;
-                          });
+                      DropdownSearch<Province>(
+                        // clearButtonProps: ClearButtonProps(isVisible: true),
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Provinsi"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse("${API_WILAYAH}provinces.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllProvince = data as List<dynamic>;
+                            var modelsProvince =
+                                Province.fromJsonList(listAllProvince);
+
+                            return modelsProvince;
+                          } catch (err) {
+                            print(err);
+                            return List<Province>.empty();
+                          }
                         },
+                        onChanged: (value) {
+                          setState(() {
+                            _provinsi = value!.name;
+                            _provinsiID = int.tryParse(value.id!);
+                          });
+                          // print("Provinsi ID: ${value!.id}");
+                          // if (value.isBlank!) {
+                          //   print("Provinsi ID: ${value!.id}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
                       SizedBox(
                         height: 16,
                       ),
-                      DropDown(
-                        itemList: [
-                          'Jakarta Selatan',
-                          'Jakarta Utara',
-                          'Jakarta Selatan',
-                          'Jakarta Barat'
-                        ],
-                        labelField: "Kota/Kabupaten",
-                        function: (value) {
-                          print("Kota/Kabupaten : ${value}");
-                          setState(() {
-                            _kota = value as String;
-                          });
+                      DropdownSearch<Regencies>(
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Kota"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "${API_WILAYAH}regencies/${_provinsiID}.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllRegencies = data as List<dynamic>;
+                            var modelsRegencies =
+                                Regencies.fromJsonList(listAllRegencies);
+
+                            return modelsRegencies;
+                          } catch (err) {
+                            print(err);
+                            return List<Regencies>.empty();
+                          }
                         },
+                        onChanged: (Regencies? data) {
+                          setState(() {
+                            _kota = data!.name;
+                            _kotaID = int.tryParse(data.id!);
+                          });
+                          // if (data != null) {
+                          //   print("Kota ID : ${_kotaID}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
                       SizedBox(
                         height: 16,
                       ),
-                      DropDown(
-                        itemList: [
-                          'Kemayoran',
-                          'Senen',
-                          'Gambir',
-                          'Cempaka Putih'
-                        ],
-                        labelField: "Kecamatan",
-                        function: (value) {
-                          print("Kecamatan : ${value}");
-                          setState(() {
-                            _kecamatan = value as String;
-                          });
+                      DropdownSearch<Districts>(
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Kecamatan"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "${API_WILAYAH}districts/${_kotaID}.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllDistricts = data as List<dynamic>;
+                            var modelsRegencies =
+                                Districts.fromJsonList(listAllDistricts);
+
+                            return modelsRegencies;
+                          } catch (err) {
+                            print(err);
+                            return List<Districts>.empty();
+                          }
                         },
+                        onChanged: (data) {
+                          setState(() {
+                            _kecamatan = data!.name;
+                            _kecamatanID = int.tryParse(data.id!);
+                          });
+                          // if (data != null) {
+                          //   print("Kota ID : ${_kotaID}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
                       SizedBox(
                         height: 16,
                       ),
-                      DropDown(
-                        itemList: [
-                          'Serdang',
-                          'Senen',
-                          'Gambir',
-                          'Cempaka Putih',
-                        ],
-                        labelField: "Kelurahan",
-                        function: (value) {
-                          print("Kelurahan : ${value}");
-                          setState(() {
-                            _kelurahan = value as String;
-                          });
+                      DropdownSearch<Villages>(
+                        dropdownDecoratorProps:
+                            dropDownDecoratorPropsWidget("Kelurahan"),
+                        asyncItems: (String filter) async {
+                          Uri url = Uri.parse(
+                              "${API_WILAYAH}villages/${_kecamatanID}.json");
+                          try {
+                            var response = await http.get(url);
+
+                            var data = json.decode(response.body);
+                            var listAllVillages = data as List<dynamic>;
+                            var modelsRegencies =
+                                Villages.fromJsonList(listAllVillages);
+
+                            return modelsRegencies;
+                          } catch (err) {
+                            print(err);
+                            return List<Villages>.empty();
+                          }
                         },
+                        onChanged: (data) {
+                          setState(() {
+                            _kelurahan = data!.name;
+                            _kelurahanID = int.tryParse(data.id!);
+                          });
+                          // if (data != null) {
+                          //   print("Kota ID : ${_kotaID}");
+                          // } else {
+                          //   print("Belum memilih apapun");
+                          // }
+                        },
+                        popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                          showSelectedItems: false,
+                          // showSearchBox: true,
+                          itemBuilder: (context, item, isSelected) {
+                            return itemDropdownBuilder(item.name!);
+                          },
+                        ),
+                        itemAsString: (item) => item.name!,
                       ),
                       SizedBox(
                         height: 16,
@@ -402,7 +544,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         ],
                         labelField: "Jenis UCO",
                         function: (value) {
-                          print("Jenis UCO : ${value}");
+                          // print("Jenis UCO : ${value}");
                           setState(() {
                             _jenisUCO = value as String;
                           });
@@ -413,12 +555,14 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       ),
                       DropDown(
                         itemList: [
-                          'Item 1',
-                          'Item 2',
+                          'Jerigen 2',
+                          'Jerigen 4',
+                          'Jerigen 6',
+                          'Jerigen 8',
                         ],
                         labelField: "Kemasan",
                         function: (value) {
-                          print("Kemasan : ${value}");
+                          // print("Kemasan : ${value}");
                           setState(() {
                             _kemasan = value as String;
                           });
@@ -480,8 +624,8 @@ class _RONewCustomerState extends State<RONewCustomer> {
                                     },
                                   );
                                   // print("Liter : ${_quantityLiter.toString()}");
-                                  print(
-                                      "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(2)}");
+                                  // print(
+                                  //     "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
                                   return null;
                                 },
                               ),
@@ -555,6 +699,16 @@ class _RONewCustomerState extends State<RONewCustomer> {
           ),
         ),
       ),
+    );
+  }
+
+  Container itemDropdownBuilder(String item) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 20,
+      ),
+      child: Text("${item}"),
     );
   }
 }

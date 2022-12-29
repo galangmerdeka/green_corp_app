@@ -4,9 +4,10 @@ import 'package:green_corp_app/presentation/widget/snackbar_custom.dart';
 import 'package:green_corp_app/theme.dart';
 import 'package:get/get.dart';
 
-PreferredSizeWidget AppBarCustom(BuildContext context) {
+PreferredSizeWidget AppBarCustom(BuildContext context, String titleScreen) {
   return AppBar(
     backgroundColor: primaryTextColor,
+    title: Text(titleScreen),
     actions: [
       IconButton(
         onPressed: () {

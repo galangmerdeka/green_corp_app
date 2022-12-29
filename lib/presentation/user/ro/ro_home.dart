@@ -34,11 +34,19 @@ class ROHome extends StatelessWidget {
         "route": ROHistoryPage.routeName,
         "is_active": true,
       },
+      {
+        "title": "Inbox",
+        "code": "inbox",
+        "icon": Icons.inbox_rounded,
+        "route": null,
+        "is_active": true,
+      },
     ];
     return Scaffold(
-      appBar: AppBarCustom(context),
+      appBar: AppBarCustom(context, "RO"),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: ScrollPhysics(),
           child: Center(
             child: Column(
               children: [
@@ -48,7 +56,7 @@ class ROHome extends StatelessWidget {
                 ),
                 Container(
                   // color: Colors.red,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height * 0.7,
                   width: double.infinity,
                   child: Column(
                     children: [
@@ -61,6 +69,10 @@ class ROHome extends StatelessWidget {
                         height: 20,
                       ),
                       menu_ro_widget(_menuList, 2),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      menu_ro_widget(_menuList, 3),
                     ],
                   ),
                 ),
@@ -130,7 +142,7 @@ class ROHome extends StatelessWidget {
           onTap: (_menuList[index]["is_active"] == false)
               ? null
               : () {
-                  print("${_menuList[index]["title"]} clicked");
+                  // print("${_menuList[index]["title"]} clicked");
                   Get.toNamed(
                     _menuList[index]["route"],
                     arguments: _menuList[index]["code"].toString(),
