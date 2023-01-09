@@ -13,10 +13,10 @@ Color fieldBackground = Color(0xffF8F8F8);
 Color fourthColorGrey = Color(0xff8E8E8B);
 
 TextStyle primaryTextStyle = GoogleFonts.inter();
-TextStyle secondaryTextStyle = GoogleFonts.inknutAntiqua();
+TextStyle secondaryTextStyle = GoogleFonts.robotoCondensed();
 
 FontWeight light = FontWeight.w300;
-FontWeight regular = FontWeight.w400;
+FontWeight regular = FontWeight.w400; 
 FontWeight medium = FontWeight.w500;
 FontWeight semiBold = FontWeight.w600;
 FontWeight bold = FontWeight.w700;
