@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:green_corp_app/presentation/user/ro/ro_new_customer.dart';
+import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
 // import 'package:green_corp_app/presentation/widget/main_logo.dart';
 import 'package:green_corp_app/theme.dart';
@@ -175,7 +175,7 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
                                 onPressed:
                                     (_dataHistory[index]["is_edited"] == false)
                                         ? () {
-                                            Get.toNamed(RONewCustomer.routeName,
+                                            Get.toNamed(AddCustomer.routeName,
                                                 arguments: "edit");
                                           }
                                         : null,

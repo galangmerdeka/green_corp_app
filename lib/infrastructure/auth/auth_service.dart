@@ -26,14 +26,14 @@ class AuthServiceRepository {
         var userData = data as Map<String, dynamic>;
         // print("data login : " + userData["data"].toString());
         var user = User.fromJson(userData["data"]);
-        var role = Role.fromJson(userData["data"]["role"]);
+        // var role = Role.fromJson(userData["data"]["role"]);
         // User _dataUser = new User();
         // print("data user" + _dataUser.getName().toString());
         SharedPreferences prefs = await SharedPreferences.getInstance();
         //
         prefs.setString("token", user.token!);
         prefs.setString("token_exp", user.token_exp.toString());
-        prefs.setString("role", role.slug!);
+        prefs.setString("role", user.role!.slug!);
         prefs.setString("user_id", user.id!);
         prefs.setString("user_name", user.name!);
         prefs.setString("user_type", user.type_user!);

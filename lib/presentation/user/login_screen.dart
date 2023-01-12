@@ -15,6 +15,7 @@ import 'package:green_corp_app/presentation/widget/text_field.dart';
 import 'package:green_corp_app/theme.dart';
 // import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         // TODO: implement listener
         if (state is AuthLoading) {
           print("Sign In Loading");
@@ -59,10 +60,11 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
           print("Login Error : " + state.errMessage);
           alertErrorDialog(context, state.errMessage);
         } else if (state is AuthSuccess) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
           // Get.offAllNamed(Landing.routeName, arguments: state.user.type_user);
           print("Login Sukses : ${state.user.name}");
           print("Token : ${state.user.token}");
-          Get.offAll(() => Landing());
+          Get.offAll(() => Landing(), arguments: prefs.getString("role"));
         }
       },
       builder: (context, state) {

@@ -12,6 +12,7 @@ import 'package:green_corp_app/application/created_data/cubit/created_data_cubit
 import 'package:green_corp_app/infrastructure/master_data/category_service.dart';
 import 'package:green_corp_app/infrastructure/master_data/category_status_service.dart';
 import 'package:green_corp_app/infrastructure/master_data/pack_type_service.dart';
+import 'package:green_corp_app/infrastructure/transaction/get_customer_service.dart';
 import 'package:green_corp_app/infrastructure/wilayah/districts_service.dart';
 import 'package:green_corp_app/infrastructure/wilayah/province_service.dart';
 import 'package:green_corp_app/infrastructure/wilayah/regencies_service.dart';
@@ -20,6 +21,7 @@ import 'package:green_corp_app/model/master_data/category.dart';
 import 'package:green_corp_app/model/master_data/category_status.dart';
 import 'package:green_corp_app/model/master_data/pack_type.dart';
 import 'package:green_corp_app/model/transaction.dart/created_data_model.dart';
+import 'package:green_corp_app/model/transaction.dart/get_customer_code.dart';
 // import 'package:green_corp_app/model/user/user.dart';
 import 'package:green_corp_app/model/wilayah/districts.dart';
 import 'package:green_corp_app/model/wilayah/regencies.dart';
@@ -30,24 +32,26 @@ import 'package:green_corp_app/model/wilayah/province.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/dropdown.dart';
+import 'package:green_corp_app/presentation/widget/item_dropdown_builder.dart';
 // import 'package:green_corp_app/presentation/widget/main_logo.dart';
 import 'package:green_corp_app/presentation/widget/snackbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/text_field_without_icon.dart';
+import 'package:green_corp_app/presentation/widget/textfield_props.dart';
 import 'package:green_corp_app/theme.dart';
 import 'package:get/get.dart';
 // import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../widget/dropdown_decorator_props.dart';
 
-class RONewCustomer extends StatefulWidget {
-  const RONewCustomer({super.key});
+class AddCustomer extends StatefulWidget {
+  const AddCustomer({super.key});
   static const routeName = '/ro/home/new_customer';
 
   @override
-  State<RONewCustomer> createState() => _RONewCustomerState();
+  State<AddCustomer> createState() => _AddCustomerState();
 }
 
-class _RONewCustomerState extends State<RONewCustomer> {
+class _AddCustomerState extends State<AddCustomer> {
   @override
   void initState() {
     getDataUserName();
@@ -59,26 +63,22 @@ class _RONewCustomerState extends State<RONewCustomer> {
   // List<Map<String, dynamic>> _userSales = [
   //   {"id": "0001", "name": "John Doe"}
   // ];
-  List<String> _pelangganRO = [
-    "P001",
-    "P002",
-    "P003",
-  ];
-  List<String> _namaUsahaRO = [
-    "Hotel Aston",
-    "Hotel Horison",
-    "Hotel Ave Kalimantan",
-    "JCC International Hotel",
-  ];
+
+  // List<String> _namaUsahaRO = [
+  //   "Hotel Aston",
+  //   "Hotel Horison",
+  //   "Hotel Ave Kalimantan",
+  //   "JCC International Hotel",
+  // ];
   // String? _kategori;
   String? _kategoriID;
 
   final _idPelangganNew = TextEditingController();
   final _orderId = TextEditingController();
-  String? _selectedIdPelangganRO;
+  String? _codePelanggan;
   String? _selectedKategori;
   // String? _selectedLokasiGudang;
-  String? _selectedNamaUsahaRO;
+  // String? _selectedNamaUsahaRO;
   String? _provinsi;
   int? _provinsiID;
   String? _kota;
@@ -89,11 +89,11 @@ class _RONewCustomerState extends State<RONewCustomer> {
   int? _kelurahanID;
   String? _lokasiGudangName;
   int? _lokasiGudangID;
-  final _namaUsaha = TextEditingController();
-  final _alamatDetail = TextEditingController();
-  final _namaPJ = TextEditingController();
-  final _jabatanPJ = TextEditingController();
-  final _noTelpPJ = TextEditingController();
+  TextEditingController _namaUsaha = TextEditingController();
+  TextEditingController _alamatDetail = TextEditingController();
+  TextEditingController _namaPJ = TextEditingController();
+  TextEditingController _jabatanPJ = TextEditingController();
+  TextEditingController _noTelpPJ = TextEditingController();
   String? _status;
   final _keterangan = TextEditingController();
   final _harga = TextEditingController();
@@ -104,7 +104,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
   String? _kemasanID;
   String? _kategoriStatusID;
   String? _kategoriTitleKet;
-  bool _isSubmitted = false;
+  // bool _isSubmitted = false;
   String? username;
   String? usertype;
 
@@ -114,25 +114,25 @@ class _RONewCustomerState extends State<RONewCustomer> {
     });
   }
 
-  void _updateQuantityLt(value) {
-    setState(() {
-      _quantityLiter = value;
-    });
-  }
+  // void _updateQuantityLt(value) {
+  //   setState(() {
+  //     _quantityLiter = value;
+  //   });
+  // }
 
-  void _updateIsSubmitted(value) {
-    setState(() {
-      _isSubmitted = value;
-    });
-  }
+  // void _updateIsSubmitted(value) {
+  //   setState(() {
+  //     _isSubmitted = value;
+  //   });
+  // }
 
-  void _resetKota() {
-    setState(() {
-      if (_kota!.isNotEmpty) {
-        _kota = null;
-      }
-    });
-  }
+  // void _resetKota() {
+  //   setState(() {
+  //     if (_kota!.isNotEmpty) {
+  //       _kota = null;
+  //     }
+  //   });
+  // }
 
   Future<void> getDataUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -206,7 +206,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       (username != null)
                           ? Text(
                               "Sales Type : ${username}",
-                              style: primaryTextStyle.copyWith(
+                              style: secondaryTextStyle.copyWith(
                                 fontWeight: bold,
                                 fontSize: 16,
                               ),
@@ -216,7 +216,7 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       (usertype != null)
                           ? Text(
                               "Sales Name : ${usertype}",
-                              style: primaryTextStyle.copyWith(
+                              style: secondaryTextStyle.copyWith(
                                 fontWeight: bold,
                                 fontSize: 16,
                               ),
@@ -241,16 +241,71 @@ class _RONewCustomerState extends State<RONewCustomer> {
                       children: [
                         (_codeScreen == "new" || _codeScreen == "edit")
                             ? Container()
-                            : DropDown(
-                                itemList: _pelangganRO,
-                                labelField: "ID Pelanggan",
-                                function: (value) {
-                                  // print("Kategori : ${value}");
+                            : DropdownSearch<GetCustomerCode>(
+                                // clearButtonProps: ClearButtonProps(isVisible: true),
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget(
+                                        "ID Pelanggan"),
+                                asyncItems: (String filter) async {
+                                  GetCustomerService _dataCustomerCode =
+                                      await GetCustomerService();
+
+                                  return _dataCustomerCode.getCustomerCodeAll();
+                                },
+                                onChanged: (value) async {
+                                  GetCustomerService _dataCustomerByCode =
+                                      await GetCustomerService();
+                                  _dataCustomerByCode
+                                      .getCustomerCodeByCode(
+                                          value!.code_pelanggan!)
+                                      .then(
+                                    (value) async {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      // var nama_usaha =
+                                      //     prefs.getString("nama_usaha");
+                                      // print(value.toString());
+                                      setState(
+                                        () {
+                                          _namaUsaha = TextEditingController(
+                                              text: prefs
+                                                  .getString("nama_usaha"));
+                                          _namaPJ = TextEditingController(
+                                              text: prefs.getString("nama_pj"));
+                                          _jabatanPJ = TextEditingController(
+                                              text: prefs
+                                                  .getString("jabatan_pj"));
+                                          _noTelpPJ = TextEditingController(
+                                              text:
+                                                  "0${prefs.getString("phone_number")}");
+                                          _alamatDetail = TextEditingController(
+                                              text: prefs.getString("alamat"));
+                                        },
+                                      );
+                                    },
+                                  );
+
                                   setState(() {
-                                    _selectedIdPelangganRO = value as String;
+                                    // _kategori = value!.title;
+                                    _codePelanggan = value.code_pelanggan;
                                   });
                                 },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  searchFieldProps: textFieldProps(),
+                                  showSelectedItems: false,
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(
+                                        item.code_pelanggan! +
+                                            " - " +
+                                            item.nama_usaha!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.code_pelanggan!,
                               ),
+
                         SizedBox(
                           height: 16,
                         ),
@@ -270,6 +325,8 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
+                            searchFieldProps: textFieldProps(),
                             showSelectedItems: false,
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
@@ -281,25 +338,16 @@ class _RONewCustomerState extends State<RONewCustomer> {
                         SizedBox(
                           height: 16,
                         ),
+                        TextFieldWithoutIcon(
+                          context,
+                          // hintText: "Nama Usaha",
+                          obsText: false,
+                          textController: _namaUsaha,
+                          // textController: TextEditingController()
+                          //   ..text = "Data USAHA",
+                          label: "Nama Usaha",
+                        ),
 
-                        (_codeScreen == "new" || _codeScreen == "edit")
-                            ? TextFieldWithoutIcon(
-                                context,
-                                // hintText: "Nama Usaha",
-                                obsText: false,
-                                textController: _namaUsaha,
-                                label: "Nama Usaha",
-                              )
-                            : DropDown(
-                                itemList: _namaUsahaRO,
-                                labelField: "Nama Usaha",
-                                function: (value) {
-                                  // print("Nama Usaha : ${value}");
-                                  setState(() {
-                                    _selectedNamaUsahaRO = value as String;
-                                  });
-                                },
-                              ),
                         SizedBox(
                           height: 16,
                         ),
@@ -350,7 +398,9 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
                               return itemDropdownBuilder(item.province_name!);
@@ -377,7 +427,9 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
                               return itemDropdownBuilder(item.kota_name!);
@@ -404,7 +456,9 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
                               return itemDropdownBuilder(item.district_name!);
@@ -431,7 +485,9 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
                               return itemDropdownBuilder(item.villages_name!);
@@ -458,7 +514,9 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
                               return itemDropdownBuilder(item.kota_name!);
@@ -517,7 +575,9 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             // }
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
                               return itemDropdownBuilder(item.title!);
@@ -620,16 +680,26 @@ class _RONewCustomerState extends State<RONewCustomer> {
                             });
                           },
                           popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                            showSearchBox: true,
                             showSelectedItems: false,
+                            searchFieldProps: textFieldProps(),
                             // showSearchBox: true,
                             itemBuilder: (context, item, isSelected) {
-                              return itemDropdownBuilder(item.title! +
-                                  " - " +
-                                  item.keterangan.toString());
+                              return itemDropdownBuilder(
+                                item.status_kategori_code! +
+                                    " - " +
+                                    item.title! +
+                                    " - " +
+                                    item.keterangan.toString(),
+                              );
                             },
                           ),
                           itemAsString: (item) =>
-                              item.title! + " - " + item.keterangan.toString(),
+                              item.status_kategori_code! +
+                              " - " +
+                              item.title! +
+                              " - " +
+                              item.keterangan.toString(),
                         ),
                         SizedBox(
                           height: 16,
@@ -697,16 +767,6 @@ class _RONewCustomerState extends State<RONewCustomer> {
           ),
         ),
       ),
-    );
-  }
-
-  Container itemDropdownBuilder(String item) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 20,
-        horizontal: 20,
-      ),
-      child: Text("${item}"),
     );
   }
 }

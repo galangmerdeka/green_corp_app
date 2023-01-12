@@ -6,7 +6,7 @@ import 'package:green_corp_app/config/constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CreatedNewService {
+class AddData {
   Future<Either<String, String>> createdDataNew(
       {required Map<String, dynamic> createdDataModel}) async {
     Uri url = Uri.parse("$BASE_URL//transaction/add");

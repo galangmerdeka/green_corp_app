@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:green_corp_app/infrastructure/transaction/created_new_service.dart';
-import 'package:green_corp_app/model/transaction.dart/created_data_model.dart';
+import 'package:green_corp_app/infrastructure/transaction/add_data.dart';
+// import 'package:green_corp_app/model/transaction.dart/created_data_model.dart';
 import 'package:meta/meta.dart';
 
 part 'created_data_state.dart';
 
 class CreatedDataCubit extends Cubit<CreatedDataState> {
   CreatedDataCubit() : super(CreatedDataInitial());
-  final CreatedNewService _createdNewService = new CreatedNewService();
+  final AddData _createdNewService = new AddData();
   void submittedData(Map<String, dynamic> _dataSubmitted) async {
     emit(CreatedDataLoading());
     try {

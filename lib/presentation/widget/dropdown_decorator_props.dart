@@ -4,6 +4,7 @@ import 'package:green_corp_app/theme.dart';
 
 DropDownDecoratorProps dropDownDecoratorPropsWidget(String label) {
   return DropDownDecoratorProps(
+    baseStyle: secondaryTextStyle,
     dropdownSearchDecoration: InputDecoration(
       labelText: label,
       labelStyle: secondaryTextStyle,

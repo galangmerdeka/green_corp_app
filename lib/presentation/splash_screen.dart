@@ -50,9 +50,8 @@ class _SplashScreenState extends State<SplashScreen> {
     var hasToken = prefs.getString("token") ?? null;
     print("Token : $hasToken");
     Timer(Duration(seconds: 1), () {
-      Get.offAll(
-        () => (hasToken == null) ? LoginScreen() : Landing(),
-      );
+      Get.offAll(() => (hasToken == null) ? LoginScreen() : Landing(),
+          arguments: (hasToken == null) ? null : prefs.getString("role"));
     });
     // await getSessionInfo().then(
     //   (value) => Get.offAll(
