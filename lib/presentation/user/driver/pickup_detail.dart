@@ -57,6 +57,7 @@ class _PickupDetailState extends State<PickupDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final _dataPickupDetail = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: AppBarCustom(context, "Pickup Detail"),
       body: SafeArea(
@@ -80,60 +81,66 @@ class _PickupDetailState extends State<PickupDetail> {
                           fontWeight: bold,
                         ),
                       ),
-                      detailPickupData("ID Pelanggan", "ID0001"),
+                      detailPickupData(
+                          "ID Pelanggan", _dataPickupDetail["pelanggan_code"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Order OD", "0001"),
+                      detailPickupData(
+                          "Order ID", _dataPickupDetail["order_code"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Sales Name", "Yudha"),
+                      detailPickupData(
+                          "Sales Name", _dataPickupDetail["user_created_name"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Lokasi Gudang", "Gudang WH01"),
+                      detailPickupData(
+                          "Lokasi Gudang", _dataPickupDetail["gudang_name"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Nama Usaha", "Hotel Ave Kalimantan"),
+                      detailPickupData(
+                          "Nama Usaha", _dataPickupDetail["nama_usaha"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Nama PJ", "Agus"),
+                      detailPickupData("Nama PJ", _dataPickupDetail["nama_pj"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Nama PIC", "Suratno"),
+                      detailPickupData(
+                          "No Telp", "0${_dataPickupDetail["phone_number"]}"),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("No Telp", "08474893938"),
+                      detailPickupData(
+                          "Alamat Detail", _dataPickupDetail["alamat"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Alamat Detail",
-                          "Jln. Perum Suka Suka Kec Ledo, Kel Sabalo Bengkayang Kalimantan"),
+                      detailPickupData("Kemasan", _dataPickupDetail["kemasan"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Kemasan", "Jerigen 25"),
+                      detailPickupData(
+                          "Total Kemasan", _dataPickupDetail["total_kemasan"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Total Kemasan", "35"),
+                      detailPickupData(
+                          "Jenis UCO", _dataPickupDetail["jenis_uco"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Jenis UCO", "Cair"),
+                      detailPickupData("Total Quantity / Lt",
+                          _dataPickupDetail["quantity_liter"]),
                       Divider(
                         thickness: 2,
                       ),
-                      detailPickupData("Total Quantity / Lt", "350"),
-                      Divider(
-                        thickness: 2,
-                      ),
-                      detailPickupData("Total Quantity / Kg", "35"),
+                      detailPickupData("Total Quantity / Kg",
+                          _dataPickupDetail["quantity_kg"]),
                       Divider(
                         thickness: 2,
                       ),

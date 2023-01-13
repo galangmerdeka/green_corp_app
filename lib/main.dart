@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:green_corp_app/app_widget.dart';
+import 'package:green_corp_app/providers/session_checker.dart';
+import 'package:provider/provider.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  Provider.debugCheckInvalidValueType = null;
+  WidgetsFlutterBinding.ensureInitialized();
+  SessionChecker _sessionChecker = SessionChecker();
+  _sessionChecker.setSessionCondition();
   runApp(const AppWidget());
 }
 

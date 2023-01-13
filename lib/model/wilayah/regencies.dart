@@ -1,14 +1,14 @@
 class Regencies {
-  String? id;
-  String? province_id;
-  String? name;
+  int? kota_id;
+  int? province_id;
+  String? kota_name;
 
-  Regencies({this.id, this.province_id, this.name});
+  Regencies({this.kota_id, this.province_id, this.kota_name});
 
   Regencies.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
+    kota_id = json["kabupaten_kota_id"];
     province_id = json["province_id"];
-    name = json["name"];
+    kota_name = json["kabupaten_kota_name"];
   }
 
   static List<Regencies> fromJsonList(List list) {
@@ -18,9 +18,9 @@ class Regencies {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data["id"] = this.id;
+    data["kabupaten_kota_id"] = this.kota_id;
     data["province_id"] = this.province_id;
-    data["name"] = this.name;
+    data["kabupaten_kota_name"] = this.kota_name;
     return data;
   }
 }

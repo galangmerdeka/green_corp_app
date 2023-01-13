@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:green_corp_app/presentation/user/ro/repeat_customer.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_history.dart';
-import 'package:green_corp_app/presentation/user/ro/ro_new_customer.dart';
+import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/main_logo.dart';
 import 'package:green_corp_app/theme.dart';
@@ -17,14 +18,14 @@ class ROHome extends StatelessWidget {
         "title": "New Customer",
         "code": "new",
         "icon": Icons.person_add_alt_rounded,
-        "route": RONewCustomer.routeName,
+        "route": AddCustomer.routeName,
         "is_active": true,
       },
       {
         "title": "Repeat Customer",
         "code": "ro",
         "icon": Icons.repeat_on_rounded,
-        "route": RONewCustomer.routeName,
+        "route": AddCustomer.routeName,
         "is_active": true,
       },
       {
