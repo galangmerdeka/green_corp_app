@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:green_corp_app/infrastructure/driver/driver_service.dart';
+// import 'package:green_corp_app/infrastructure/driver/start_time.dart';
 import 'package:green_corp_app/model/driver/pickup.dart';
 import 'package:meta/meta.dart';
 
@@ -21,4 +22,18 @@ class DriverTaskCubit extends Cubit<DriverTaskState> {
       emit(DriverTaskError(e.toString()));
     }
   }
+
+  // void startPickupByTransID(String transaction_id) async {
+  //   emit(DriverPickStartTimeLoading());
+  //   try {
+  //     final _data =
+  //         await _driverService.startTimePickupByTransID(transaction_id);
+  //     _data.fold(
+  //       (l) => emit(DriverTaskError(l)),
+  //       (r) => emit(DriverPickStartTimeSuccess(r)),
+  //     );
+  //   } catch (e) {
+  //     emit(DriverTaskError(e.toString()));
+  //   }
+  // }
 }

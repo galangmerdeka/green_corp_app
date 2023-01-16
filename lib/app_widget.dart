@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:green_corp_app/application/auth/cubit/auth_cubit.dart';
 import 'package:green_corp_app/application/created_data/cubit/created_data_cubit.dart';
+import 'package:green_corp_app/application/driver_pickup_start/cubit/driver_pickup_start_cubit.dart';
 import 'package:green_corp_app/application/driver_task/cubit/driver_task_cubit.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/splash_screen.dart';
@@ -30,6 +31,7 @@ class AppWidget extends StatelessWidget {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => CreatedDataCubit()),
         BlocProvider(create: (context) => DriverTaskCubit()),
+        BlocProvider(create: (context) => DriverPickupCubit(),)
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

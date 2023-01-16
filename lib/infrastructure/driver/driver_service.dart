@@ -54,4 +54,71 @@ class DriverService {
       return left(e.toString());
     }
   }
+
+  Future<Either<String, String>> startTimePickupByTransID(
+      String transaction_id) async {
+    Uri url = Uri.parse("${BASE_URL}//driver/startTimer");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    var mapHeaders = new Map<String, String>();
+    mapHeaders = {
+      // "Content-Type": "application/json",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Connection": "keep-alive",
+      "Authorization": "Bearer $token",
+    };
+
+    try {
+      var response = await http.post(
+        url,
+        headers: mapHeaders,
+        body: {
+          "transaction_id": transaction_id,
+        },
+      );
+      var responseData = json.decode(response.body);
+      print("rsponse : " + responseData["message"]);
+      if (response.statusCode == 404) {
+        return left("${responseData["message"]}");
+      }
+      return right("Sending Start Time Success");
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
+  Future<Either<String, String>> reschedule({
+    required String transaction_id,
+    required String date,
+  }) async {
+    Uri url = Uri.parse("${BASE_URL}//driver/reshedule");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    var mapHeaders = new Map<String, String>();
+    mapHeaders = {
+      // "Content-Type": "application/json",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Connection": "keep-alive",
+      "Authorization": "Bearer $token",
+    };
+
+    try {
+      var response = await http.post(
+        url,
+        headers: mapHeaders,
+        body: {
+          "transaction_id": transaction_id,
+          "reschedule_date": date,
+        },
+      );
+      var responseData = json.decode(response.body);
+      print("rsponse : " + responseData["message"]);
+      if (response.statusCode == 404) {
+        return left("${responseData["message"]}");
+      }
+      return right("Reschedule Request Submitted");
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
 }

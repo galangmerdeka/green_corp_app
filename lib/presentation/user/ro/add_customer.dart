@@ -154,11 +154,24 @@ class _AddCustomerState extends State<AddCustomer> {
   KonversiLtKg objKonversi = KonversiLtKg();
   // User _dataUser = User();
   @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _idPelangganNew.dispose();
+    _orderId.dispose();
+    _namaUsaha.dispose();
+    _alamatDetail.dispose();
+    _namaPJ.dispose();
+    _jabatanPJ.dispose();
+    _noTelpPJ.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _codeScreen = ModalRoute.of(context)!.settings.arguments as String;
     // print("Code Screen : ${_code_screen}");
     return BlocConsumer<CreatedDataCubit, CreatedDataState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is CreatedDataLoading) {
           print("Submitted Loading...");
         } else if (state is CreatedDataError) {
@@ -177,9 +190,11 @@ class _AddCustomerState extends State<AddCustomer> {
             },
           );
         } else if (state is CreatedDataSuccess) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
           var snackbar = SnackBarCustom(title: state.successMessage);
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
-          Get.offAllNamed(Landing.routeName);
+          Get.offAllNamed(Landing.routeName,
+              arguments: prefs.getString("role"));
         }
       },
       builder: (context, state) => Scaffold(

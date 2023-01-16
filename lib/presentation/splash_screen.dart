@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:green_corp_app/config/constant.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/user/login_screen.dart';
-import 'package:green_corp_app/providers/session_checker.dart';
+// import 'package:green_corp_app/providers/session_checker.dart';
 // import 'package:green_corp_app/providers/session_checker.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 import 'package:green_corp_app/theme.dart';
