@@ -28,3 +28,15 @@ class DriverRescheduleSuccess extends DriverPickupState {
   final String successMessage;
   DriverRescheduleSuccess(this.successMessage);
 }
+
+class DriverPickupLoading extends DriverPickupState {}
+
+class DriverPickupError extends DriverPickupState {
+  final String errMessage;
+  DriverPickupError(this.errMessage);
+}
+
+class DriverPickupSuccess extends DriverPickupState {
+  final String successMessage;
+  DriverPickupSuccess(this.successMessage);
+}

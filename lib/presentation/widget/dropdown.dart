@@ -6,9 +6,11 @@ DropdownSearch DropDown({
   required List<String> itemList,
   required String labelField,
   required Function(String?) function,
+  String? Function(String?)? validatorField,
 }) {
   return DropdownSearch<String>(
     onChanged: function,
+    validator: validatorField,
     popupProps: PopupProps.menu(
       showSelectedItems: true,
     ),

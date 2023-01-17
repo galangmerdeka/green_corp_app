@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
+// import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
 // import 'package:green_corp_app/presentation/widget/main_logo.dart';
 import 'package:green_corp_app/theme.dart';
@@ -86,6 +86,26 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
       "status": "Persetujuan",
       "is_edited": true,
     },
+    {
+      "date": "2022/09/09",
+      "id_pelanggan": "C-0001",
+      "order_id": "ORD-001",
+      "nama_usaha": "Hotel Ave Kalimantan",
+      "pic": "Agus",
+      "qty": 10,
+      "status": "Persetujuan",
+      "is_edited": true,
+    },
+    {
+      "date": "2022/09/09",
+      "id_pelanggan": "C-0001",
+      "order_id": "ORD-001",
+      "nama_usaha": "Hotel Ave Kalimantan",
+      "pic": "Agus",
+      "qty": 10,
+      "status": "Persetujuan",
+      "is_edited": true,
+    },
   ];
   @override
   Widget build(BuildContext context) {
@@ -99,6 +119,9 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
               // SizedBox(
               //   height: 20,
               // ),
+              Container(
+                child: Text("Datra"),
+              ),
               Container(
                 // height: MediaQuery.of(context).size.height,
                 // width: double.infinity,
@@ -165,31 +188,31 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
                           SizedBox(
                             width: 10,
                           ),
-                          Container(
-                            padding: EdgeInsets.only(
-                              right: 20,
-                            ),
-                            // color: Colors.red,
-                            child: Center(
-                              child: IconButton(
-                                onPressed:
-                                    (_dataHistory[index]["is_edited"] == false)
-                                        ? () {
-                                            Get.toNamed(AddCustomer.routeName,
-                                                arguments: "edit");
-                                          }
-                                        : null,
-                                icon: Icon(
-                                  Icons.edit_rounded,
-                                  color:
-                                      (_dataHistory[index]["is_edited"] != true)
-                                          ? buttonColor
-                                          : buttonColorGrey,
-                                ),
-                                iconSize: 30,
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   padding: EdgeInsets.only(
+                          //     right: 20,
+                          //   ),
+                          //   // color: Colors.red,
+                          //   child: Center(
+                          //     child: IconButton(
+                          //       onPressed:
+                          //           (_dataHistory[index]["is_edited"] == false)
+                          //               ? () {
+                          //                   Get.toNamed(AddCustomer.routeName,
+                          //                       arguments: "edit");
+                          //                 }
+                          //               : null,
+                          //       icon: Icon(
+                          //         Icons.edit_rounded,
+                          //         color:
+                          //             (_dataHistory[index]["is_edited"] != true)
+                          //                 ? buttonColor
+                          //                 : buttonColorGrey,
+                          //       ),
+                          //       iconSize: 30,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     );
@@ -197,25 +220,6 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
                   itemCount: _dataHistory.length,
                   itemExtent: 100,
                 ),
-                // child: HorizontalDataTable(
-                //   // horizontalScrollPhysics: ScrollPhysics(),
-                //   leftHandSideColumnWidth: 100,
-                //   rightHandSideColumnWidth:
-                //       MediaQuery.of(context).size.width * 3.58,
-                //   // double.infinity,
-                //   // leftHandSideColBackgroundColor: Color(0xFF2A2A2A),
-                //   // rightHandSideColBackgroundColor: Color(0xFFFFFFFF),
-                //   isFixedHeader: true,
-                //   rowSeparatorWidget: const Divider(
-                //     color: Colors.black54,
-                //     height: 1.0,
-                //     thickness: 1.0,
-                //   ),
-                //   headerWidgets: getTitleWidget(),
-                //   leftSideItemBuilder: generateFirstColumnRow,
-                //   rightSideItemBuilder: generateRightHandSideColumnRow,
-                //   itemCount: 10,
-                // ),
               ),
             ],
           ),

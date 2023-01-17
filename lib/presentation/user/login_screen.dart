@@ -28,8 +28,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with InputValidation {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _usernameController =
-      TextEditingController(text: "99999");
+  TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController =
       TextEditingController(text: "GreenCorp100%!");
   int loginFailedCounter = 0;
