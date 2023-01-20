@@ -11,6 +11,7 @@ import 'package:green_corp_app/presentation/splash_screen.dart';
 import 'package:green_corp_app/presentation/user/driver/pickup_detail.dart';
 import 'package:green_corp_app/presentation/user/driver/task.dart';
 import 'package:green_corp_app/presentation/user/login_screen.dart';
+import 'package:green_corp_app/presentation/user/ro/inbox.dart';
 import 'package:green_corp_app/presentation/user/ro/repeat_customer.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_history.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_home.dart';
@@ -31,7 +32,9 @@ class AppWidget extends StatelessWidget {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => CreatedDataCubit()),
         BlocProvider(create: (context) => DriverTaskCubit()),
-        BlocProvider(create: (context) => DriverPickupCubit(),)
+        BlocProvider(
+          create: (context) => DriverPickupCubit(),
+        )
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -53,6 +56,7 @@ class AppWidget extends StatelessWidget {
           ROHistoryPage.routeName: (ctx) => ROHistoryPage(),
           Task.routeName: (ctx) => Task(),
           PickupDetail.routeName: (ctx) => PickupDetail(),
+          InboxPage.routeName: (ctx) => InboxPage(),
         },
       ),
     );

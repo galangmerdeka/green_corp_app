@@ -66,7 +66,7 @@ class _AddCustomerState extends State<AddCustomer> {
   final _orderId = TextEditingController();
   TextEditingController _codePelanggan = TextEditingController();
   String? _selectedKategori;
-  TextEditingController _provinsi = TextEditingController();
+  String? _provinsi;
   int? _provinsiID;
   String? _kota;
   int? _kotaID;
@@ -295,8 +295,16 @@ class _AddCustomerState extends State<AddCustomer> {
                                         text: value.phone_number);
                                     _alamatDetail = TextEditingController(
                                         text: value.alamat);
-                                    _provinsi = TextEditingController(
-                                        text: "DKI Jakarta");
+                                    _provinsiID =
+                                        int.tryParse(value.provinsi_id!);
+                                    _provinsi = "DKI Jakarta";
+                                    _kotaID =
+                                        int.tryParse(value.kabupaten_kota_id!);
+                                    _kota = "Jakarta Pusat";
+                                    _kecamatanID =
+                                        int.tryParse(value.kecamatan_id!);
+                                    _kecamatan = "Cempaka Putih";
+                                    _kelurahan = "Kemayoran";
                                   });
                                   setState(() {
                                     // _kategori = value!.title;
@@ -319,7 +327,6 @@ class _AddCustomerState extends State<AddCustomer> {
                                 ),
                                 itemAsString: (item) => item.nama_usaha!,
                               ),
-
                         SizedBox(
                           height: 16,
                         ),
@@ -403,6 +410,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             }
                           },
                           // hintText: "Nama Usaha",
+                          readOnlyText: (_codeScreen != "new") ? true : false,
                           obsText: false,
                           textController: _namaPJ,
                           label: "Nama PJ",
@@ -418,6 +426,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             }
                           },
                           // hintText: "Nama Usaha",
+                          readOnlyText: (_codeScreen != "new") ? true : false,
                           obsText: false,
                           textController: _jabatanPJ,
                           label: "Jabatan PJ",
@@ -433,6 +442,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             }
                           },
                           // hintText: "Nama Usaha",
+                          readOnlyText: (_codeScreen != "new") ? true : false,
                           obsText: false,
                           textController: _noTelpPJ,
                           label: "No Telp PJ",
@@ -441,174 +451,237 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        DropdownSearch<Province>(
-                          validator: (value) {
-                            if (value == null) {
-                              return "Field Wajib Diisi";
-                            }
-                          },
-                          // clearButtonProps: ClearButtonProps(isVisible: true),
-                          dropdownDecoratorProps:
-                              dropDownDecoratorPropsWidget("Provinsi"),
-                          asyncItems: (String filter) async {
-                            ProvinceService _dataProvince =
-                                await ProvinceService();
-                            return _dataProvince.getProvinceData();
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              _provinsi = TextEditingController(
-                                  text: value!.province_name);
-                              _provinsiID = value.province_id;
-                            });
-                          },
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            showSearchBox: true,
-                            showSelectedItems: false,
-                            searchFieldProps: textFieldProps(),
-                            // showSearchBox: true,
-                            itemBuilder: (context, item, isSelected) {
-                              return itemDropdownBuilder(item.province_name!);
-                            },
-                          ),
-                          itemAsString: (item) => item.province_name!,
-                        ),
+                        (_codeScreen == "new")
+                            ? DropdownSearch<Province>(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Field Wajib Diisi";
+                                  }
+                                },
+                                // clearButtonProps: ClearButtonProps(isVisible: true),
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget("Provinsi"),
+                                asyncItems: (String filter) async {
+                                  ProvinceService _dataProvince =
+                                      await ProvinceService();
+                                  return _dataProvince.getProvinceData();
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _provinsi = value!.province_name;
+                                    _provinsiID = value.province_id;
+                                  });
+                                },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  showSelectedItems: false,
+                                  searchFieldProps: textFieldProps(),
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(
+                                        item.province_name!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.province_name!,
+                              )
+                            : TextFieldWithoutIcon(
+                                context,
+                                // hintText: "Nama Usaha",
+                                readOnlyText:
+                                    (_codeScreen != "new") ? true : false,
+                                obsText: false,
+                                textController:
+                                    TextEditingController(text: _provinsi),
+                                label: "Provinsi",
+                              ),
                         SizedBox(
                           height: 16,
                         ),
-                        DropdownSearch<Regencies>(
-                          validator: (value) {
-                            if (value == null) {
-                              return "Field Wajib Diisi";
-                            }
-                          },
-                          dropdownDecoratorProps:
-                              dropDownDecoratorPropsWidget("Kota"),
-                          asyncItems: (String filter) async {
-                            RegenciesService _dataRegencies =
-                                await RegenciesService();
-                            return _dataRegencies
-                                .getRegenciesData(_provinsiID.toString());
-                          },
-                          onChanged: (Regencies? data) {
-                            setState(() {
-                              _kota = data!.kota_name;
-                              _kotaID = data.kota_id;
-                            });
-                          },
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            showSearchBox: true,
-                            showSelectedItems: false,
-                            searchFieldProps: textFieldProps(),
-                            // showSearchBox: true,
-                            itemBuilder: (context, item, isSelected) {
-                              return itemDropdownBuilder(item.kota_name!);
-                            },
-                          ),
-                          itemAsString: (item) => item.kota_name!,
-                        ),
+                        (_codeScreen == "new")
+                            ? DropdownSearch<Regencies>(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Field Wajib Diisi";
+                                  }
+                                },
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget("Kota"),
+                                asyncItems: (String filter) async {
+                                  RegenciesService _dataRegencies =
+                                      await RegenciesService();
+                                  return _dataRegencies
+                                      .getRegenciesData(_provinsiID.toString());
+                                },
+                                onChanged: (Regencies? data) {
+                                  setState(() {
+                                    _kota = data!.kota_name;
+                                    _kotaID = data.kota_id;
+                                  });
+                                },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  showSelectedItems: false,
+                                  searchFieldProps: textFieldProps(),
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(item.kota_name!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.kota_name!,
+                              )
+                            : TextFieldWithoutIcon(
+                                context,
+                                // hintText: "Nama Usaha",
+                                readOnlyText:
+                                    (_codeScreen != "new") ? true : false,
+                                obsText: false,
+                                textController:
+                                    TextEditingController(text: _kota),
+                                label: "Kota",
+                              ),
                         SizedBox(
                           height: 16,
                         ),
-                        DropdownSearch<Districts>(
-                          validator: (value) {
-                            if (value == null) {
-                              return "Field Wajib Diisi";
-                            }
-                          },
-                          dropdownDecoratorProps:
-                              dropDownDecoratorPropsWidget("Kecamatan"),
-                          asyncItems: (String filter) async {
-                            DistrictsService _dataDistricts =
-                                await DistrictsService();
-                            return _dataDistricts
-                                .getDistrictsData(_kotaID.toString());
-                          },
-                          onChanged: (data) {
-                            setState(() {
-                              _kecamatan = data!.district_name;
-                              _kecamatanID = data.district_id;
-                            });
-                          },
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            showSearchBox: true,
-                            showSelectedItems: false,
-                            searchFieldProps: textFieldProps(),
-                            // showSearchBox: true,
-                            itemBuilder: (context, item, isSelected) {
-                              return itemDropdownBuilder(item.district_name!);
-                            },
-                          ),
-                          itemAsString: (item) => item.district_name!,
-                        ),
+                        (_codeScreen == "new")
+                            ? DropdownSearch<Districts>(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Field Wajib Diisi";
+                                  }
+                                },
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget("Kecamatan"),
+                                asyncItems: (String filter) async {
+                                  DistrictsService _dataDistricts =
+                                      await DistrictsService();
+                                  return _dataDistricts
+                                      .getDistrictsData(_kotaID.toString());
+                                },
+                                onChanged: (data) {
+                                  setState(() {
+                                    _kecamatan = data!.district_name;
+                                    _kecamatanID = data.district_id;
+                                  });
+                                },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  showSelectedItems: false,
+                                  searchFieldProps: textFieldProps(),
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(
+                                        item.district_name!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.district_name!,
+                              )
+                            : TextFieldWithoutIcon(
+                                context,
+                                // hintText: "Nama Usaha",
+                                readOnlyText:
+                                    (_codeScreen != "new") ? true : false,
+                                obsText: false,
+                                textController:
+                                    TextEditingController(text: _kecamatan),
+                                label: "Kecamatan",
+                              ),
                         SizedBox(
                           height: 16,
                         ),
-                        DropdownSearch<Villages>(
-                          validator: (value) {
-                            if (value == null) {
-                              return "Field Wajib Diisi";
-                            }
-                          },
-                          dropdownDecoratorProps:
-                              dropDownDecoratorPropsWidget("Kelurahan"),
-                          asyncItems: (String filter) async {
-                            VillagesService _dataVillages =
-                                await VillagesService();
-                            return _dataVillages
-                                .getVillagesData(_kecamatanID.toString());
-                          },
-                          onChanged: (data) {
-                            setState(() {
-                              _kelurahan = data!.villages_name;
-                              _kelurahanID = data.villages_id;
-                            });
-                          },
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            showSearchBox: true,
-                            showSelectedItems: false,
-                            searchFieldProps: textFieldProps(),
-                            // showSearchBox: true,
-                            itemBuilder: (context, item, isSelected) {
-                              return itemDropdownBuilder(item.villages_name!);
-                            },
-                          ),
-                          itemAsString: (item) => item.villages_name!,
-                        ),
+                        (_codeScreen == "new")
+                            ? DropdownSearch<Villages>(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Field Wajib Diisi";
+                                  }
+                                },
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget("Kelurahan"),
+                                asyncItems: (String filter) async {
+                                  VillagesService _dataVillages =
+                                      await VillagesService();
+                                  return _dataVillages
+                                      .getVillagesData(_kecamatanID.toString());
+                                },
+                                onChanged: (data) {
+                                  setState(() {
+                                    _kelurahan = data!.villages_name;
+                                    _kelurahanID = data.villages_id;
+                                  });
+                                },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  showSelectedItems: false,
+                                  searchFieldProps: textFieldProps(),
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(
+                                        item.villages_name!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.villages_name!,
+                              )
+                            : TextFieldWithoutIcon(
+                                context,
+                                // hintText: "Nama Usaha",
+                                readOnlyText:
+                                    (_codeScreen != "new") ? true : false,
+                                obsText: false,
+                                textController:
+                                    TextEditingController(text: _kelurahan),
+                                label: "Kelurahan",
+                              ),
                         SizedBox(
                           height: 16,
                         ),
-                        DropdownSearch<Regencies>(
-                          validator: (value) {
-                            if (value == null) {
-                              return "Field Wajib Diisi";
-                            }
-                          },
-                          dropdownDecoratorProps:
-                              dropDownDecoratorPropsWidget("Lokasi Gudang"),
-                          asyncItems: (String filter) async {
-                            RegenciesService _dataWarehouse =
-                                await RegenciesService();
-                            return _dataWarehouse
-                                .getRegenciesData(_provinsiID.toString());
-                          },
-                          onChanged: (data) {
-                            setState(() {
-                              _lokasiGudangName = data!.kota_name;
-                              _lokasiGudangID = data.kota_id;
-                            });
-                          },
-                          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-                            showSearchBox: true,
-                            showSelectedItems: false,
-                            searchFieldProps: textFieldProps(),
-                            // showSearchBox: true,
-                            itemBuilder: (context, item, isSelected) {
-                              return itemDropdownBuilder(item.kota_name!);
-                            },
-                          ),
-                          itemAsString: (item) => item.kota_name!,
-                        ),
+                        (_codeScreen == "new")
+                            ? DropdownSearch<Regencies>(
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Field Wajib Diisi";
+                                  }
+                                },
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget(
+                                        "Lokasi Gudang"),
+                                asyncItems: (String filter) async {
+                                  RegenciesService _dataWarehouse =
+                                      await RegenciesService();
+                                  return _dataWarehouse
+                                      .getRegenciesData(_provinsiID.toString());
+                                },
+                                onChanged: (data) {
+                                  setState(() {
+                                    _lokasiGudangName = data!.kota_name;
+                                    _lokasiGudangID = data.kota_id;
+                                  });
+                                },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  showSelectedItems: false,
+                                  searchFieldProps: textFieldProps(),
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(item.kota_name!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.kota_name!,
+                              )
+                            : TextFieldWithoutIcon(
+                                context,
+                                // hintText: "Nama Usaha",
+                                readOnlyText:
+                                    (_codeScreen != "new") ? true : false,
+                                obsText: false,
+                                textController:
+                                    TextEditingController(text: _kota),
+                                label: "Lokasi Gudang",
+                              ),
                         SizedBox(
                           height: 16,
                         ),
@@ -689,12 +762,6 @@ class _AddCustomerState extends State<AddCustomer> {
                                 itemAsString: (item) => item.title!,
                               )
                             : Container(),
-
-                        // (_jenisUCO == "N")
-                        //     ? Container()
-                        //     : SizedBox(
-                        //         height: 16,
-                        //       ),
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

@@ -44,7 +44,7 @@ PreferredSizeWidget AppBarCustom(BuildContext context, String titleScreen) {
                 );
               },
               icon: Icon(
-                Icons.search_outlined,
+                Icons.filter_alt_outlined,
                 size: 30,
                 color: Colors.white54,
               ),

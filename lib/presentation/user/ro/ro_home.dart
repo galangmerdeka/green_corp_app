@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:green_corp_app/presentation/user/ro/inbox.dart';
 import 'package:green_corp_app/presentation/user/ro/repeat_customer.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_history.dart';
 import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
@@ -39,7 +40,7 @@ class ROHome extends StatelessWidget {
         "title": "Inbox",
         "code": "inbox",
         "icon": Icons.inbox_rounded,
-        "route": null,
+        "route": InboxPage.routeName,
         "is_active": true,
       },
     ];
@@ -57,7 +58,7 @@ class ROHome extends StatelessWidget {
                 ),
                 Container(
                   // color: Colors.red,
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height,
                   width: double.infinity,
                   child: Column(
                     children: [

@@ -1,9 +1,15 @@
+// import 'dart:html';
+
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:green_corp_app/model/transaction.dart/history.dart';
 // import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
 import 'package:green_corp_app/presentation/widget/appbar_custom.dart';
+// import 'package:green_corp_app/presentation/widget/text_field.dart';
+// import 'package:green_corp_app/presentation/widget/textfield_props.dart';
 // import 'package:green_corp_app/presentation/widget/main_logo.dart';
 import 'package:green_corp_app/theme.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 // import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 class ROHistoryPage extends StatefulWidget {
@@ -15,314 +21,126 @@ class ROHistoryPage extends StatefulWidget {
 }
 
 class _ROHistoryPageState extends State<ROHistoryPage> {
-  List<Map<String, dynamic>> _dataHistory = [
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": false,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-    {
-      "date": "2022/09/09",
-      "id_pelanggan": "C-0001",
-      "order_id": "ORD-001",
-      "nama_usaha": "Hotel Ave Kalimantan",
-      "pic": "Agus",
-      "qty": 10,
-      "status": "Persetujuan",
-      "is_edited": true,
-    },
-  ];
+  TextEditingController _searchBox = TextEditingController();
+  List<History>? _history = listHistory;
+
+  void searchData(String query) {
+    final suggest = listHistory.where((value) {
+      final namaUsaha = value.nama_usaha!.toLowerCase();
+      final input = query.toLowerCase();
+      return namaUsaha.contains(input);
+    }).toList();
+    setState(() {
+      _history = suggest;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarCustom(context, "History"),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // MainLogo(),
-              // SizedBox(
-              //   height: 20,
-              // ),
-              Container(
-                child: Text("Datra"),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
               ),
-              Container(
-                // height: MediaQuery.of(context).size.height,
-                // width: double.infinity,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 5,
-                      child: Row(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(
-                              left: 10,
-                            ),
-                            child: Text(
-                              _dataHistory[index]["id_pelanggan"],
-                              style: primaryTextStyle.copyWith(
-                                fontSize: 20,
-                                fontWeight: bold,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              width: double.infinity,
-                              // color: Colors.blue,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    _dataHistory[index]["nama_usaha"],
-                                    style: primaryTextStyle.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: medium,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Order ID : ${_dataHistory[index]["order_id"]}",
-                                    style: primaryTextStyle.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: medium,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Status : ${_dataHistory[index]["status"]}",
-                                    style: primaryTextStyle.copyWith(
-                                      fontSize: 14,
-                                      fontWeight: medium,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          // Container(
-                          //   padding: EdgeInsets.only(
-                          //     right: 20,
-                          //   ),
-                          //   // color: Colors.red,
-                          //   child: Center(
-                          //     child: IconButton(
-                          //       onPressed:
-                          //           (_dataHistory[index]["is_edited"] == false)
-                          //               ? () {
-                          //                   Get.toNamed(AddCustomer.routeName,
-                          //                       arguments: "edit");
-                          //                 }
-                          //               : null,
-                          //       icon: Icon(
-                          //         Icons.edit_rounded,
-                          //         color:
-                          //             (_dataHistory[index]["is_edited"] != true)
-                          //                 ? buttonColor
-                          //                 : buttonColorGrey,
-                          //       ),
-                          //       iconSize: 30,
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: _dataHistory.length,
-                  itemExtent: 100,
+              child: TextField(
+                controller: _searchBox,
+                onChanged: searchData,
+                decoration: InputDecoration(
+                  hintText: "Search Here...",
+                  hintStyle: secondaryTextStyle.copyWith(fontSize: 16),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  // height: MediaQuery.of(context).size.height,
+                  // width: double.infinity,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final _data = _history![index];
+                      return Card(
+                        elevation: 5,
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(
+                                left: 10,
+                              ),
+                              child: Text(
+                                _data.id_pelanggan!,
+                                style: secondaryTextStyle.copyWith(
+                                  fontSize: 20,
+                                  fontWeight: bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                width: double.infinity,
+                                // color: Colors.blue,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      _data.nama_usaha!,
+                                      style: secondaryTextStyle.copyWith(
+                                        fontSize: 20,
+                                        fontWeight: medium,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Order ID : ${_data.order_id}",
+                                      style: secondaryTextStyle.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: medium,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Status : ${_data.status}",
+                                      style: secondaryTextStyle.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: medium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    itemCount: _history!.length,
+                    itemExtent: 100,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  // Widget generateFirstColumnRow(BuildContext context, int index) {
-  //   return Container(
-  //     child: Text("2022/09/09"),
-  //     width: 50,
-  //     height: 52,
-  //     padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //     alignment: Alignment.centerLeft,
-  //   );
-  // }
-
-  // Widget generateRightHandSideColumnRow(BuildContext context, int index) {
-  //   return Row(
-  //     children: <Widget>[
-  //       Container(
-  //         child: Text("C-0001"),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //       Container(
-  //         child: Text("ORD-001"),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //       Container(
-  //         child: Text("Usaha Babe"),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //       Container(
-  //         child: Text("Agus"),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //       Container(
-  //         child: Text("10"),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //       Container(
-  //         child: Text("Persetujuan"),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //       Container(
-  //         child: IconButton(
-  //           onPressed: () {
-  //             Get.toNamed(RONewCustomer.routeName, arguments: "edit");
-  //           },
-  //           icon: Icon(Icons.edit_rounded),
-  //           color: buttonColor,
-  //         ),
-  //         width: 200,
-  //         height: 52,
-  //         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //         alignment: Alignment.centerLeft,
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // List<Widget> getTitleWidget() {
-  //   return [
-  //     getTitleItemWidget("Date"),
-  //     getTitleItemWidget("ID Pelanggan"),
-  //     getTitleItemWidget("Order ID"),
-  //     getTitleItemWidget("Nama Usaha"),
-  //     getTitleItemWidget("PIC"),
-  //     getTitleItemWidget("Qty"),
-  //     getTitleItemWidget("Status"),
-  //     getTitleItemWidget("Action"),
-  //   ];
-  // }
-
-  // Widget getTitleItemWidget(String label) {
-  //   return Container(
-  //     child: Text(
-  //       label,
-  //       style: primaryTextStyle.copyWith(fontWeight: bold),
-  //     ),
-  //     width: 200,
-  //     height: 56,
-  //     padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-  //     alignment: Alignment.centerLeft,
-  //   );
-  // }
 }
