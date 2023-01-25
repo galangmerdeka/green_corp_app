@@ -38,7 +38,9 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    content: CircularProgressIndicator(),
+                    content: Container(
+                      child: CircularProgressIndicator(),
+                    ),
                     title: Text(
                       "Loading...",
                       style: secondaryTextStyle,

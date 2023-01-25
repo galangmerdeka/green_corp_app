@@ -39,7 +39,7 @@ PreferredSizeWidget AppBarCustom(BuildContext context, String titleScreen) {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return modalFilterHistory(context);
+                    return modalFilterHistory();
                   },
                 );
               },

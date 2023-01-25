@@ -95,6 +95,7 @@ class _AddCustomerState extends State<AddCustomer> {
   String? _kategoriTitleKet;
   String? username;
   String? usertype;
+  TextEditingController? _kategori;
 
   void _updateQuantityKg(value) {
     setState(() {
@@ -287,6 +288,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                   setState(() {
                                     _namaUsaha = TextEditingController(
                                         text: value.nama_usaha);
+                                    _kategori = TextEditingController(
+                                        text: value.kategori);
                                     _namaPJ = TextEditingController(
                                         text: value.nama_pj);
                                     _jabatanPJ = TextEditingController(
@@ -295,16 +298,10 @@ class _AddCustomerState extends State<AddCustomer> {
                                         text: value.phone_number);
                                     _alamatDetail = TextEditingController(
                                         text: value.alamat);
-                                    _provinsiID =
-                                        int.tryParse(value.provinsi_id!);
-                                    _provinsi = "DKI Jakarta";
-                                    _kotaID =
-                                        int.tryParse(value.kabupaten_kota_id!);
-                                    _kota = "Jakarta Pusat";
-                                    _kecamatanID =
-                                        int.tryParse(value.kecamatan_id!);
-                                    _kecamatan = "Cempaka Putih";
-                                    _kelurahan = "Kemayoran";
+                                    _provinsi = value.provinsi;
+                                    _kota = value.kabupaten_kota;
+                                    _kecamatan = value.kecamatan;
+                                    // _kelurahan = "Kemayoran";
                                   });
                                   setState(() {
                                     // _kategori = value!.title;
@@ -374,7 +371,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                 readOnlyText: true,
                                 obsText: false,
                                 // textController: _codePelanggan,
-                                // textController: TextEditingController()
+                                textController: _kategori,
                                 //   ..text = "Data USAHA",
                                 label: "Kategori",
                               ),

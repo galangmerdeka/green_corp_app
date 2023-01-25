@@ -4,10 +4,11 @@ class GetCustomerCode {
   String? nama_pj;
   String? jabatan_pj;
   String? phone_number;
-  String? provinsi_id;
-  String? kabupaten_kota_id;
-  String? kecamatan_id;
+  String? provinsi;
+  String? kabupaten_kota;
+  String? kecamatan;
   String? alamat;
+  String? kategori;
 
   GetCustomerCode({
     this.code_pelanggan,
@@ -15,10 +16,11 @@ class GetCustomerCode {
     this.nama_pj,
     this.jabatan_pj,
     this.phone_number,
-    this.provinsi_id,
-    this.kabupaten_kota_id,
-    this.kecamatan_id,
+    this.provinsi,
+    this.kabupaten_kota,
+    this.kecamatan,
     this.alamat,
+    this.kategori,
   });
 
   GetCustomerCode.fromJson(Map<String, dynamic> json) {
@@ -27,10 +29,11 @@ class GetCustomerCode {
     this.nama_pj = json["nama_pj"];
     this.jabatan_pj = json["jabatan_pj"];
     this.phone_number = json["phone_number"];
-    this.provinsi_id = json["provinsi_id"];
-    this.kabupaten_kota_id = json["kabupaten_kota_id"];
-    this.kecamatan_id = json["kecamatan_id"];
+    this.provinsi = json["provinsi"]["provinsi_name"];
+    this.kabupaten_kota = json["kabupaten_kota"]["kabupaten_kota_name"];
+    this.kecamatan = json["kecamatan"]["kecamatan_name"];
     this.alamat = json["alamat"];
+    this.kategori = json["category"]["title"];
   }
 
   static List<GetCustomerCode> fromJsonList(List list) {
