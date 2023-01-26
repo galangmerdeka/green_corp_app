@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryStatusService {
-  Future<List<CategoryStatus>> getCategoryStatusData() async {
+  Future<List<CategoryStatus>> getCategoryStatusData({String category_name = ""}) async {
     Uri url = Uri.parse("${BASE_URL}//getStatusCategory");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
@@ -26,7 +26,7 @@ class CategoryStatusService {
           "status_category_id": "",
           "status_category_code": "",
           "status_category_ket": "",
-          "status_category_name": "",
+          "status_category_name": category_name,
           "orderBy": "",
           "sort": ""
         },

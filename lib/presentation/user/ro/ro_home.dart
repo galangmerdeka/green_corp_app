@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:green_corp_app/application/history/cubit/history_cubit.dart';
+import 'package:green_corp_app/presentation/user/ro/inbox.dart';
 import 'package:green_corp_app/presentation/user/ro/repeat_customer.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_history.dart';
 import 'package:green_corp_app/presentation/user/ro/add_customer.dart';
@@ -39,7 +42,7 @@ class ROHome extends StatelessWidget {
         "title": "Inbox",
         "code": "inbox",
         "icon": Icons.inbox_rounded,
-        "route": null,
+        "route": InboxPage.routeName,
         "is_active": true,
       },
     ];
@@ -57,77 +60,47 @@ class ROHome extends StatelessWidget {
                 ),
                 Container(
                   // color: Colors.red,
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height,
                   width: double.infinity,
                   child: Column(
                     children: [
-                      menu_ro_widget(_menuList, 0),
+                      menu_ro_widget(_menuList, 0, () {
+                        Get.toNamed(
+                          _menuList[0]["route"],
+                          arguments: _menuList[0]["code"].toString(),
+                        );
+                      }),
                       SizedBox(
                         height: 20,
                       ),
-                      menu_ro_widget(_menuList, 1),
+                      menu_ro_widget(_menuList, 1, () {
+                        Get.toNamed(
+                          _menuList[1]["route"],
+                          arguments: _menuList[1]["code"].toString(),
+                        );
+                      }),
                       SizedBox(
                         height: 20,
                       ),
-                      menu_ro_widget(_menuList, 2),
+                      menu_ro_widget(_menuList, 2, () {
+                        context.read<HistoryCubit>().getHistory();
+                        Get.toNamed(
+                          _menuList[2]["route"],
+                          arguments: _menuList[2]["code"].toString(),
+                        );
+                      }),
                       SizedBox(
                         height: 20,
                       ),
-                      menu_ro_widget(_menuList, 3),
+                      menu_ro_widget(_menuList, 3, () {
+                        Get.toNamed(
+                          _menuList[3]["route"],
+                          arguments: _menuList[3]["code"].toString(),
+                        );
+                      }),
                     ],
                   ),
                 ),
-                // Container(
-                //   color: Colors.blueAccent,
-                //   width: double.infinity,
-                //   child: GridView.builder(
-                //     shrinkWrap: true,
-                //     physics: NeverScrollableScrollPhysics(),
-                //     itemCount: _menuList.length,
-                //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //       crossAxisCount: 2,
-                //       crossAxisSpacing: 1,
-                //     ),
-                //     itemBuilder: (context, int index) {
-                //       return GestureDetector(
-                //         onTap: (_menuList[index]["is_active"] == false)
-                //             ? null
-                //             : () {
-                //                 print("${_menuList[index]["title"]} clicked");
-                //                 Get.toNamed(_menuList[index]["route"]);
-                //               },
-                //         child: Container(
-                //           // color: Colors.red,
-                //           child: Column(
-                //             children: [
-                //               Icon(
-                //                 _menuList[index]["icon"],
-                //                 size: 80,
-                //                 color: buttonColor,
-                //                 // shadows: <Shadow>[
-                //                 //   Shadow(
-                //                 //     color: Colors.black,
-                //                 //     blurRadius: 5.0,
-                //                 //   ),
-                //                 // ],
-                //               ),
-                //               SizedBox(
-                //                 height: 20,
-                //               ),
-                //               Text(
-                //                 _menuList[index]["title"],
-                //                 style: primaryTextStyle.copyWith(
-                //                   fontSize: 16,
-                //                   fontWeight: medium,
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -136,19 +109,12 @@ class ROHome extends StatelessWidget {
     );
   }
 
-  Column menu_ro_widget(List<Map<String, dynamic>> _menuList, int index) {
+  Column menu_ro_widget(
+      List<Map<String, dynamic>> _menuList, int index, Function()? routing) {
     return Column(
       children: [
         GestureDetector(
-          onTap: (_menuList[index]["is_active"] == false)
-              ? null
-              : () {
-                  // print("${_menuList[index]["title"]} clicked");
-                  Get.toNamed(
-                    _menuList[index]["route"],
-                    arguments: _menuList[index]["code"].toString(),
-                  );
-                },
+          onTap: (_menuList[index]["is_active"] == false) ? null : routing,
           child: Container(
             child: Icon(
               _menuList[index]["icon"],

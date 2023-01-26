@@ -28,8 +28,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with InputValidation {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _usernameController =
-      TextEditingController(text: "99999");
+  TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController =
       TextEditingController(text: "GreenCorp100%!");
   int loginFailedCounter = 0;
@@ -153,13 +152,15 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
                               width: double.infinity,
                               height: 60,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    context.read<AuthCubit>().signInUser(
-                                        _usernameController.text,
-                                        _passwordController.text);
-                                  }
-                                },
+                                onPressed: (state is AuthLoading)
+                                    ? null
+                                    : () {
+                                        if (_formKey.currentState!.validate()) {
+                                          context.read<AuthCubit>().signInUser(
+                                              _usernameController.text,
+                                              _passwordController.text);
+                                        }
+                                      },
                                 // onPressed: (loginFailedCounter < LIMIT_LOGIN_FAILED)
                                 //     ? () async {
                                 //         if (_formKey.currentState!.validate()) {
@@ -250,6 +251,15 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
                 ? "NIK has been locked, please call the Administrator"
                 : data,
           ),
+          actions: [
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () => Get.back(),
+                icon: Icon(Icons.close_outlined),
+                label: Text("Close"),
+              ),
+            ),
+          ],
         );
       },
     );

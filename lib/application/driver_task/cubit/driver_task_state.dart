@@ -17,3 +17,10 @@ class DriverGetTaskSuccess extends DriverTaskState {
 
   DriverGetTaskSuccess(this.pickupModel);
 }
+
+// class DriverPickStartTimeSuccess extends DriverTaskState {
+//   final String successMessage;
+//   DriverPickStartTimeSuccess(this.successMessage);
+// }
+
+// class DriverPickStartTimeLoading extends DriverTaskState {}

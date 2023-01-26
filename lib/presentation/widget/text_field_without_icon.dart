@@ -15,11 +15,11 @@ Widget TextFieldWithoutIcon(
   bool readOnlyText = false,
   String? Function(String?)? convertValueOnChanged,
   String? initValue,
-  // String? Function(String?)? validatorField,
+  String? Function(String?)? validatorField,
 }) {
   return TextFormField(
     initialValue: initValue,
-    // onTap: ,
+    validator: validatorField,
     onChanged: convertValueOnChanged,
     keyboardType: inputType,
     textAlignVertical: textAlignVer,

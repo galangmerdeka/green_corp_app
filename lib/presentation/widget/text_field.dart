@@ -10,12 +10,18 @@ Widget TextFieldWidget(
   required TextEditingController textController,
   required String label,
   String? Function(String?)? validatorField,
+  String? Function(String?)? savedData,
+  Future<String?> Function()? tap,
+  bool isReadOnly = false,
 }) {
   return TextFormField(
     validator: validatorField,
     obscureText: obsText,
+    readOnly: isReadOnly,
     controller: textController,
     style: secondaryTextStyle,
+    onSaved: savedData,
+    onTap: tap,
     decoration: InputDecoration(
       labelText: label,
       filled: colorFieldFill,

@@ -78,15 +78,6 @@ class GetCustomerService {
             //     GetCustomerCode.fromJsonList(dataCustomerCode["data"]);
             var customerByCode = dataCustomerCode as Map<String, dynamic>;
             data = GetCustomerCode.fromJsonList(customerByCode["data"]);
-            // print(data);
-            prefs.setString(
-                "nama_usaha", customerByCode["data"][0]["nama_usaha"]);
-            prefs.setString("nama_pj", customerByCode["data"][0]["nama_pj"]);
-            prefs.setString(
-                "jabatan_pj", customerByCode["data"][0]["jabatan_pj"]);
-            prefs.setString(
-                "phone_number", customerByCode["data"][0]["phone_number"]);
-            prefs.setString("alamat", customerByCode["data"][0]["alamat"]);
           }
         },
       );

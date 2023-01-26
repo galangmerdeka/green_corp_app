@@ -9,7 +9,7 @@ TextFieldProps textFieldProps() {
       hintText: "Type Search Here",
       hintStyle: secondaryTextStyle,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(15),
       ),
     ),
   );
