@@ -17,3 +17,13 @@ class CreatedDataSuccess extends CreatedDataState {
   final String successMessage;
   CreatedDataSuccess(this.successMessage);
 }
+
+class CreatedDataRepeatError extends CreatedDataState {
+  final String errMessage;
+  CreatedDataRepeatError(this.errMessage);
+}
+
+class CreatedDataRepeatSuccess extends CreatedDataState {
+  final String succesMessage;
+  CreatedDataRepeatSuccess(this.succesMessage);
+}

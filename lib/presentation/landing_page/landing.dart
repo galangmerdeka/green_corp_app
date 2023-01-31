@@ -26,7 +26,7 @@ class Landing extends StatelessWidget {
         'is_active': (_role == "sales-ro") ? true : false,
       },
       {
-        'title': 'PENJUALAN',
+        'title': null,
         'url': "assets/icon/vector_2.png",
         'is_active': false,
       },

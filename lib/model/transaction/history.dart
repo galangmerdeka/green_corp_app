@@ -1,19 +1,29 @@
 class History {
-  String? created_at, code_pelanggan, order_code, nama_usaha, status_pelanggan;
+  String? created_at,
+      code_pelanggan,
+      order_code,
+      nama_usaha,
+      status_pelanggan,
+      status_category_code,
+      keterangan;
 
-  History({
-    this.created_at,
-    this.code_pelanggan,
-    this.order_code,
-    this.nama_usaha,
-    this.status_pelanggan,
-  });
+  History(
+      {this.created_at,
+      this.code_pelanggan,
+      this.order_code,
+      this.nama_usaha,
+      this.status_pelanggan,
+      this.status_category_code,
+      this.keterangan});
 
   History.fromJson(Map<String, dynamic> json) {
-    this.code_pelanggan = json["customer"]["pelanggan_code"];
-    this.order_code = json["order_code"];
-    this.nama_usaha = json["customer"]["nama_usaha"];
-    this.status_pelanggan = json["status_pelanggan"];
+    this.code_pelanggan = json["customer"]["pelanggan_code"] ?? null;
+    this.order_code = json["order_code"] ?? null;
+    this.nama_usaha = json["customer"]["nama_usaha"] ?? null;
+    this.status_pelanggan = json["status_pelanggan"] ?? null;
+    this.status_category_code =
+        json["status_category"]["status_category_code"] ?? null;
+    this.keterangan = json["status_category"]["keterangan"] ?? null;
   }
 
   static List<History> fromJsonList(List list) {

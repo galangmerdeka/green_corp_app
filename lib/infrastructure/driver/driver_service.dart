@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 class DriverService {
   Future<Either<String, List<PickupModel?>>> getDriverTaskByID(
       String driver_id) async {
-    Uri url = Uri.parse("${BASE_URL}//driver/get");
+    Uri url = Uri.parse("${BASE_URL}driver/get");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();
@@ -57,7 +57,7 @@ class DriverService {
 
   Future<Either<String, String>> startTimePickupByTransID(
       String transaction_id) async {
-    Uri url = Uri.parse("${BASE_URL}//driver/startTimer");
+    Uri url = Uri.parse("${BASE_URL}driver/startTimer");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();
@@ -89,7 +89,8 @@ class DriverService {
 
   Future<Either<String, String>> reschedule({
     required String transaction_id,
-    required String date,
+    // required String date,
+    required String reschedule_note,
   }) async {
     Uri url = Uri.parse("${BASE_URL}//driver/reshedule");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -108,7 +109,8 @@ class DriverService {
         headers: mapHeaders,
         body: {
           "transaction_id": transaction_id,
-          "reschedule_date": date,
+          "reschedule_date": "",
+          "keterangan_reschedule": reschedule_note
         },
       );
       var responseData = json.decode(response.body);

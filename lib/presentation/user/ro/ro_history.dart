@@ -68,6 +68,10 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
                         )
                       : SingleChildScrollView(
                           child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
                             // height: MediaQuery.of(context).size.height,
                             // width: double.infinity,
                             child: (state is HistorySuccess)
@@ -139,7 +143,16 @@ class _ROHistoryPageState extends State<ROHistoryPage> {
                               ),
                             ),
                             Text(
-                              "Status : ${(_data.status_pelanggan == "N") ? "New" : "Repeat"}",
+                              // "Status : ${(_data.status_pelanggan == "N") ? "New" : "Repeat"}",
+                              "Kode Status : ${_data.status_category_code}",
+                              style: secondaryTextStyle.copyWith(
+                                fontSize: 14,
+                                fontWeight: medium,
+                              ),
+                            ),
+                            Text(
+                              // "Status : ${(_data.status_pelanggan == "N") ? "New" : "Repeat"}",
+                              "Keterangan : ${_data.keterangan}",
                               style: secondaryTextStyle.copyWith(
                                 fontSize: 14,
                                 fontWeight: medium,

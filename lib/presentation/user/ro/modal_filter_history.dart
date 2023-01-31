@@ -2,6 +2,8 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:green_corp_app/application/history/cubit/history_cubit.dart';
+import 'package:green_corp_app/infrastructure/master_data/category_status_service.dart';
+import 'package:green_corp_app/model/master_data/category_status.dart';
 import 'package:green_corp_app/presentation/widget/dropdown_decorator_props.dart';
 // import 'package:green_corp_app/presentation/widget/item_dropdown_builder.dart';
 import 'package:green_corp_app/presentation/widget/text_field.dart';
@@ -69,16 +71,22 @@ class _modalFilterHistoryState extends State<modalFilterHistory> {
               SizedBox(
                 height: 10,
               ),
-              DropdownSearch<String>(
+              DropdownSearch<CategoryStatus>(
                 // clearButtonProps: ClearButtonProps(isVisible: true),
                 dropdownDecoratorProps: dropDownDecoratorPropsWidget("Status"),
-                items: [
-                  "New",
-                  "Repeat",
-                ],
+                // items: [
+                //   "New",
+                //   "Repeat",
+                // ],
+                asyncItems: (String filter) async {
+                  CategoryStatusService _dataCategoryStatus =
+                      await CategoryStatusService();
+                  return _dataCategoryStatus.getCategoryStatusData();
+                },
                 onChanged: (value) {
                   setState(() {
-                    _statusFilter = (value == "New") ? "N" : "R";
+                    // _statusFilter = (value == "New") ? "N" : "R";
+                    _statusFilter = value!.status_kategori_code;
                   });
                 },
                 popupProps: PopupPropsMultiSelection.modalBottomSheet(
@@ -90,7 +98,12 @@ class _modalFilterHistoryState extends State<modalFilterHistory> {
                   //   return itemDropdownBuilder(ite);
                   // },
                 ),
-                itemAsString: (item) => item,
+                itemAsString: (item) =>
+                    item.status_kategori_code! +
+                    " - " +
+                    item.title! +
+                    " - " +
+                    item.keterangan.toString(),
               ),
             ],
           ),
@@ -121,10 +134,11 @@ class _modalFilterHistoryState extends State<modalFilterHistory> {
                   child: ElevatedButton(
                     child: const Text('Filter'),
                     onPressed: () {
-                      print("date : " + _filterDate.text);
+                      // print("date : " + _filterDate.text);
                       context.read<HistoryCubit>().getHistory(
                             date: _filterDate.text,
-                            status_pelanggan: _statusFilter ?? "",
+                            // status_pelanggan: _statusFilter ?? "",
+                            status_kategori_code: _statusFilter!,
                             nama_usaha: _searchBox.text,
                           );
                       Navigator.pop(context);

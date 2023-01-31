@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProvinceService {
   Future<List<Province>> getProvinceData() async {
-    Uri url = Uri.parse("${BASE_URL}//wilayah/getProvinsi");
+    Uri url = Uri.parse("${BASE_URL}wilayah/getProvinsi");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();

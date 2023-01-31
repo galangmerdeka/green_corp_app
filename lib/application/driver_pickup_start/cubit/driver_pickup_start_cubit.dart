@@ -22,11 +22,11 @@ class DriverPickupCubit extends Cubit<DriverPickupState> {
     }
   }
 
-  void rescheduleRequest(String transaction_id, String date) async {
+  void rescheduleRequest(String transaction_id, String reschedule_note) async {
     emit(DriverRescheduleLoading());
     try {
       final _data = await _driverService.reschedule(
-          transaction_id: transaction_id, date: date);
+          transaction_id: transaction_id, reschedule_note: reschedule_note);
       _data.fold(
         (l) => emit(DriverRescheduleError(l)),
         (r) => emit(DriverRescheduleSuccess(r)),

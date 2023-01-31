@@ -11,7 +11,7 @@ class AuthServiceRepository {
   Future<Either<String, User>> signInUserAuth({required dataLogin}) async {
     // Response response;
 
-    Uri url = Uri.parse("$BASE_URL//login");
+    Uri url = Uri.parse("${BASE_URL}login");
     // var userData;
     try {
       print(dataLogin);

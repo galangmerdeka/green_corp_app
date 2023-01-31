@@ -21,4 +21,18 @@ class CreatedDataCubit extends Cubit<CreatedDataState> {
       emit(CreatedDataError(e.toString()));
     }
   }
+
+  void submittedDataRepeat(Map<String, dynamic> _dataSubmitted) async {
+    emit(CreatedDataLoading());
+    try {
+      final _data = await _createdNewService.createdDataRepeat(
+          createdDataModel: _dataSubmitted);
+      _data.fold(
+        (l) => emit(CreatedDataRepeatError(l)),
+        (r) => emit(CreatedDataRepeatSuccess(r)),
+      );
+    } catch (e) {
+      emit(CreatedDataRepeatError(e.toString()));
+    }
+  }
 }
