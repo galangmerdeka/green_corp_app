@@ -272,7 +272,7 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                           onPressed: (_data[index]!
                                                           .pickup_start_time !=
                                                       null &&
-                                                  differenceDay > 0)
+                                                  differenceDay >= 0)
                                               ? () {
                                                   // print("Clicked");
                                                   Get.toNamed(
@@ -320,16 +320,13 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                                           : "Cair",
                                                       "quantity_liter":
                                                           _data[index]!
-                                                              .quantity_liter
-                                                              .toString(),
+                                                              .quantity_liter,
                                                       "quantity_kg":
                                                           _data[index]!
-                                                              .quantity_kg
-                                                              .toString(),
+                                                              .quantity_kg,
                                                       "total_kemasan":
                                                           _data[index]!
-                                                              .total_kemasan
-                                                              .toString(),
+                                                              .total_kemasan,
                                                     },
                                                   );
                                                 }

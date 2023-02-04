@@ -1,4 +1,5 @@
 class InboxData {
+  String? id;
   String? order_code;
   String? pelanggan_code;
   String? nama_usaha;
@@ -21,6 +22,7 @@ class InboxData {
   String? status_category_desc;
 
   InboxData({
+    this.id,
     this.order_code,
     this.pelanggan_code,
     this.status_pelanggan,
@@ -42,6 +44,7 @@ class InboxData {
   });
 
   InboxData.fromJson(Map<String, dynamic> json) {
+    this.id = json["id"];
     this.nama_usaha = json["customer"]["nama_usaha"] ?? null;
     this.order_code = json["order_code"];
     this.pelanggan_code = json["customer"]["pelanggan_code"] ?? null;

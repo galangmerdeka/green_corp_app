@@ -260,7 +260,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     children: [
                       (username != null)
                           ? Text(
-                              "Sales Type : ${username}",
+                              "Sales Type : ${usertype}",
                               style: secondaryTextStyle.copyWith(
                                 fontWeight: bold,
                                 fontSize: 16,
@@ -270,7 +270,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           : Container(),
                       (usertype != null)
                           ? Text(
-                              "Sales Name : ${usertype}",
+                              "Sales Name : ${username}",
                               style: secondaryTextStyle.copyWith(
                                 fontWeight: bold,
                                 fontSize: 16,

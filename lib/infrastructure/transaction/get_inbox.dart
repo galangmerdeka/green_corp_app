@@ -47,4 +47,38 @@ class GetInbox {
       return left(e.toString());
     }
   }
+
+  Future<Either<String, String>> getCheckStatusTransaction(
+      String transaction_id) async {
+    Uri url = Uri.parse("${BASE_URL}transaction/checkStatus");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString("token");
+    var mapHeaders = new Map<String, String>();
+    // var dataResponse;
+    mapHeaders = {
+      // "Content-Type": "application/json",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Connection": "keep-alive",
+      "Authorization": "Bearer $token",
+    };
+
+    try {
+      var response = await http.post(
+        url,
+        headers: mapHeaders,
+        body: {"transaction_id": transaction_id},
+      );
+
+      var dataInbox = json.decode(response.body);
+      if (response.statusCode != 200) {
+        return left(dataInbox["message"]);
+      }
+      print(dataInbox["message"]);
+      // dataResponse = InboxData.fromJson(dataInbox["data"]);
+
+      return right(dataInbox["message"]);
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
 }

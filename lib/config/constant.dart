@@ -6,9 +6,8 @@ String INFO_NEW_PAGE = "This feature will be release soon";
 String VERSION_APP = "1.0.3";
 String STATUS_PELANGGAN_REVISIT = "E";
 String STATUS_PELANGGAN_REPEAT = "R";
+String INBOX_ERROR_MESSAGE_KODE_STATUS_A6 =
+    "Data sedang dalam proses Recall CRO.";
 
 // Development
-// String BASE_URL = "http://192.168.1.6:8000";
-// String BASE_URL = "http://127.0.0.1:8000";
-// String BASE_URL = "http://api.linpmbd.my.id";
 String BASE_URL = "http://117.53.144.159:81/";

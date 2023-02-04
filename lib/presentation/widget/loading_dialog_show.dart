@@ -8,9 +8,18 @@ Future<dynamic> loadingDialogShow(BuildContext context) {
       return Container(
         child: AlertDialog(
           // content: Center(child: CircularProgressIndicator()),
-          title: Text(
-            "Loading...",
-            style: secondaryTextStyle,
+
+          title: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "Loading...",
+                style: secondaryTextStyle,
+              ),
+            ],
           ),
         ),
       );

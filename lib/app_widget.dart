@@ -8,6 +8,7 @@ import 'package:green_corp_app/application/driver_pickup_start/cubit/driver_pick
 import 'package:green_corp_app/application/driver_task/cubit/driver_task_cubit.dart';
 import 'package:green_corp_app/application/history/cubit/history_cubit.dart';
 import 'package:green_corp_app/application/inbox/cubit/inbox_cubit.dart';
+import 'package:green_corp_app/application/inbox_check_status/cubit/check_status_cubit.dart';
 import 'package:green_corp_app/presentation/landing_page/landing.dart';
 import 'package:green_corp_app/presentation/splash_screen.dart';
 import 'package:green_corp_app/presentation/user/driver/pickup_detail.dart';
@@ -37,6 +38,7 @@ class AppWidget extends StatelessWidget {
         BlocProvider(create: (context) => DriverPickupCubit()),
         BlocProvider(create: (context) => HistoryCubit()),
         BlocProvider(create: (context) => InboxCubit()),
+        BlocProvider(create: (context) => CheckStatusCubit())
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
