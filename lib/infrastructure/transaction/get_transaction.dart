@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:green_corp_app/config/constant.dart';
-import 'package:green_corp_app/model/transaction.dart/history.dart';
+import 'package:green_corp_app/model/transaction/history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,8 +13,9 @@ class GetTransaction {
     String? date,
     String? status_pelanggan,
     String? nama_usaha,
+    String? status_kategori_code,
   }) async {
-    Uri url = Uri.parse("${BASE_URL}//transaction/get");
+    Uri url = Uri.parse("${BASE_URL}transaction/get");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();
@@ -36,6 +37,7 @@ class GetTransaction {
           "status_pelanggan": status_pelanggan,
           "nama_usaha": nama_usaha,
           "date": date,
+          "status_kategori_code": status_kategori_code,
           "orderBy": "",
           "sort": "",
         },

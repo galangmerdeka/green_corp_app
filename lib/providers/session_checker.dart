@@ -12,9 +12,8 @@ class SessionChecker {
     } else if (token_time.isNotEmpty) {
       print("Token Exp : " + token_time);
       var dateNow = DateTime.now();
-      final differenceInMilliseconds =
-          dateNow.difference(token_exp!).inMilliseconds;
-      if (differenceInMilliseconds > 0) {
+      final differenceInMinutes = dateNow.difference(token_exp!).inMinutes;
+      if (differenceInMinutes > 0) {
         prefs.remove("token");
         prefs.setBool("is_session", false);
       }

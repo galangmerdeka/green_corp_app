@@ -1,9 +1,11 @@
 // import 'dart:convert';
 
-import 'dart:convert';
+// import 'dart:convert';
 // import 'dart:html';
 
 // import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,10 +20,11 @@ import 'package:green_corp_app/infrastructure/wilayah/province_service.dart';
 import 'package:green_corp_app/infrastructure/wilayah/regencies_service.dart';
 import 'package:green_corp_app/infrastructure/wilayah/villages_service.dart';
 import 'package:green_corp_app/model/master_data/category.dart';
+import 'package:green_corp_app/model/master_data/category_business.dart';
 import 'package:green_corp_app/model/master_data/category_status.dart';
 import 'package:green_corp_app/model/master_data/pack_type.dart';
-import 'package:green_corp_app/model/transaction.dart/created_data_model.dart';
-import 'package:green_corp_app/model/transaction.dart/get_customer_code.dart';
+import 'package:green_corp_app/model/transaction/created_data_model.dart';
+import 'package:green_corp_app/model/transaction/get_customer_code.dart';
 // import 'package:green_corp_app/model/user/user.dart';
 import 'package:green_corp_app/model/wilayah/districts.dart';
 import 'package:green_corp_app/model/wilayah/regencies.dart';
@@ -61,6 +64,7 @@ class _AddCustomerState extends State<AddCustomer> {
 
   final _formKey = GlobalKey<FormState>();
   String? _kategoriID;
+  String? _kategoriBisnisID;
 
   final _idPelangganNew = TextEditingController();
   final _orderId = TextEditingController();
@@ -96,6 +100,7 @@ class _AddCustomerState extends State<AddCustomer> {
   String? username;
   String? usertype;
   TextEditingController? _kategori;
+  TextEditingController? _kategoriBisnis;
 
   void _updateQuantityKg(value) {
     setState(() {
@@ -140,6 +145,28 @@ class _AddCustomerState extends State<AddCustomer> {
     });
   }
 
+  void updateFromInbox(Map<dynamic, dynamic> value) {
+    setState(() {
+      _codePelanggan = TextEditingController(text: value["pelanggan_code"]);
+      _namaUsaha = TextEditingController(text: value["nama_usaha"]);
+      // _kategori = TextEditingController(text: value[""]);
+      _namaPJ = TextEditingController(text: value["nama_pj"]);
+      _jabatanPJ = TextEditingController(text: value["jabatan_pj"]);
+      _noTelpPJ = TextEditingController(text: value["phone_number"]);
+      _alamatDetail = TextEditingController(text: value["alamat"]);
+      _provinsi = value["provinsi"];
+      _provinsiID = int.parse(value["provinsi_id"]);
+      _kota = value["kota"];
+      _kotaID = int.parse(value["kota_id"]);
+      _kecamatan = value["kecamatan"];
+      _kecamatanID = int.parse(value["kecamatan_id"]);
+      _kelurahan = value["kelurahan"];
+      _kelurahanID = int.parse(value["kelurahan_id"]);
+      _kategori = TextEditingController(text: value["kategori"]);
+      _kategoriBisnis = TextEditingController(text: value["kategori_bisnis"]);
+    });
+  }
+
   KonversiLtKg objKonversi = KonversiLtKg();
   // User _dataUser = User();
   @override
@@ -157,14 +184,18 @@ class _AddCustomerState extends State<AddCustomer> {
 
   @override
   Widget build(BuildContext context) {
-    final _codeScreen = ModalRoute.of(context)!.settings.arguments as String;
+    final _code = ModalRoute.of(context)!.settings.arguments as Map;
+    if (_code["source"] == "inbox") {
+      updateFromInbox(_code);
+    }
+
     // print("Code Screen : ${_code_screen}");
     return BlocConsumer<CreatedDataCubit, CreatedDataState>(
       listener: (context, state) async {
         if (state is CreatedDataLoading) {
           print("Submitted Loading...");
         } else if (state is CreatedDataError) {
-          print("Error : " + state.errMessage.toString());
+          // print("Error : " + state.errMessage.toString());
           showDialog(
             context: context,
             builder: (context) {
@@ -181,6 +212,26 @@ class _AddCustomerState extends State<AddCustomer> {
         } else if (state is CreatedDataSuccess) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           var snackbar = SnackBarCustom(title: state.successMessage);
+          ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          Get.offAllNamed(Landing.routeName,
+              arguments: prefs.getString("role"));
+        } else if (state is CreatedDataRepeatError) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                icon: Icon(
+                  Icons.error_outline_rounded,
+                  size: 34,
+                  color: Colors.redAccent,
+                ),
+                title: Text(state.errMessage),
+              );
+            },
+          );
+        } else if (state is CreatedDataRepeatSuccess) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var snackbar = SnackBarCustom(title: state.succesMessage);
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
           Get.offAllNamed(Landing.routeName,
               arguments: prefs.getString("role"));
@@ -209,7 +260,7 @@ class _AddCustomerState extends State<AddCustomer> {
                     children: [
                       (username != null)
                           ? Text(
-                              "Sales Type : ${username}",
+                              "Sales Type : ${usertype}",
                               style: secondaryTextStyle.copyWith(
                                 fontWeight: bold,
                                 fontSize: 16,
@@ -219,7 +270,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           : Container(),
                       (usertype != null)
                           ? Text(
-                              "Sales Name : ${usertype}",
+                              "Sales Name : ${username}",
                               style: secondaryTextStyle.copyWith(
                                 fontWeight: bold,
                                 fontSize: 16,
@@ -243,7 +294,8 @@ class _AddCustomerState extends State<AddCustomer> {
                     ),
                     child: Column(
                       children: [
-                        (_codeScreen != "new")
+                        (_code["code_screen"] == "ro" ||
+                                _code["source"] == "inbox")
                             ? TextFieldWithoutIcon(
                                 context,
                                 validatorField: (value) {
@@ -263,71 +315,101 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? Container()
-                            : DropdownSearch<GetCustomerCode>(
-                                validator: (value) {
-                                  if (value == null) {
-                                    return "Field Wajib Diisi";
-                                  }
-                                },
-                                // clearButtonProps: ClearButtonProps(isVisible: true),
-                                dropdownDecoratorProps:
-                                    dropDownDecoratorPropsWidget("Nama Usaha"),
-                                asyncItems: (String filter) async {
-                                  GetCustomerService _dataCustomerCode =
-                                      await GetCustomerService();
+                            : (_code["source"] == "inbox")
+                                ? TextFieldWithoutIcon(
+                                    context,
+                                    validatorField: (value) {
+                                      if (value == null) {
+                                        return "Field Wajib Diisi";
+                                      }
+                                    },
+                                    // hintText: "Nama Usaha",
+                                    readOnlyText: true,
+                                    obsText: false,
+                                    textController: _namaUsaha,
+                                    // textController: TextEditingController()
+                                    //   ..text = "Data USAHA",
+                                    label: "Nama Usaha",
+                                  )
+                                : (_code["code_screen"] == "ro")
+                                    ? DropdownSearch<GetCustomerCode>(
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return "Field Wajib Diisi";
+                                          }
+                                        },
+                                        // clearButtonProps: ClearButtonProps(isVisible: true),
+                                        dropdownDecoratorProps:
+                                            dropDownDecoratorPropsWidget(
+                                                "Nama Usaha"),
+                                        asyncItems: (String filter) async {
+                                          GetCustomerService _dataCustomerCode =
+                                              await GetCustomerService();
 
-                                  return _dataCustomerCode.getCustomerCodeAll();
-                                },
-                                onChanged: (value) async {
-                                  GetCustomerService _dataCustomerByCode =
-                                      await GetCustomerService();
-                                  _dataCustomerByCode.getCustomerCodeByCode(
-                                      value!.code_pelanggan!);
-                                  setState(() {
-                                    _namaUsaha = TextEditingController(
-                                        text: value.nama_usaha);
-                                    _kategori = TextEditingController(
-                                        text: value.kategori);
-                                    _namaPJ = TextEditingController(
-                                        text: value.nama_pj);
-                                    _jabatanPJ = TextEditingController(
-                                        text: value.jabatan_pj);
-                                    _noTelpPJ = TextEditingController(
-                                        text: value.phone_number);
-                                    _alamatDetail = TextEditingController(
-                                        text: value.alamat);
-                                    _provinsi = value.provinsi;
-                                    _kota = value.kabupaten_kota;
-                                    _kecamatan = value.kecamatan;
-                                    // _kelurahan = "Kemayoran";
-                                  });
-                                  setState(() {
-                                    // _kategori = value!.title;
-                                    _codePelanggan = TextEditingController(
-                                        text: value.code_pelanggan);
-                                    _namaUsaha = TextEditingController(
-                                        text: value.nama_usaha);
-                                  });
-                                },
-                                popupProps:
-                                    PopupPropsMultiSelection.modalBottomSheet(
-                                  showSearchBox: true,
-                                  searchFieldProps: textFieldProps(),
-                                  showSelectedItems: false,
-                                  // showSearchBox: true,
-                                  itemBuilder: (context, item, isSelected) {
-                                    return itemDropdownBuilder(
-                                        item.nama_usaha!);
-                                  },
-                                ),
-                                itemAsString: (item) => item.nama_usaha!,
-                              ),
+                                          return _dataCustomerCode
+                                              .getCustomerCodeAll();
+                                        },
+                                        onChanged: (value) async {
+                                          GetCustomerService
+                                              _dataCustomerByCode =
+                                              await GetCustomerService();
+                                          _dataCustomerByCode
+                                              .getCustomerCodeByCode(
+                                                  value!.code_pelanggan!);
+                                          setState(() {
+                                            _codePelanggan =
+                                                TextEditingController(
+                                                    text: value.code_pelanggan);
+                                            _namaUsaha = TextEditingController(
+                                                text: value.nama_usaha);
+                                            _kategori = TextEditingController(
+                                                text: value.kategori);
+                                            _namaPJ = TextEditingController(
+                                                text: value.nama_pj);
+                                            _jabatanPJ = TextEditingController(
+                                                text: value.jabatan_pj);
+                                            _noTelpPJ = TextEditingController(
+                                                text: value.phone_number);
+                                            _alamatDetail =
+                                                TextEditingController(
+                                                    text: value.alamat);
+                                            _provinsi = value.provinsi;
+                                            _provinsiID =
+                                                int.parse(value.provinsi_id!);
+                                            _kota = value.kabupaten_kota;
+                                            _kotaID = int.parse(
+                                                value.kabupaten_kota_id!);
+                                            _kecamatan = value.kecamatan;
+                                            _kecamatanID =
+                                                int.parse(value.kecamatan_id!);
+                                            _kategoriBisnis =
+                                                TextEditingController(
+                                                    text: value.kategoriBisnis);
+                                            // _kelurahan = "Kemayoran";
+                                          });
+                                        },
+                                        popupProps: PopupPropsMultiSelection
+                                            .modalBottomSheet(
+                                          showSearchBox: true,
+                                          searchFieldProps: textFieldProps(),
+                                          showSelectedItems: false,
+                                          // showSearchBox: true,
+                                          itemBuilder:
+                                              (context, item, isSelected) {
+                                            return itemDropdownBuilder(
+                                                item.nama_usaha!);
+                                          },
+                                        ),
+                                        itemAsString: (item) =>
+                                            item.nama_usaha!,
+                                      )
+                                    : Container(),
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? DropdownSearch<Category>(
                                 validator: (value) {
                                   if (value == null) {
@@ -375,39 +457,132 @@ class _AddCustomerState extends State<AddCustomer> {
                                 //   ..text = "Data USAHA",
                                 label: "Kategori",
                               ),
-                        (_codeScreen == "new")
-                            ? SizedBox(
-                                height: 16,
-                              )
-                            : Container(),
-                        (_codeScreen == "new")
-                            ? TextFieldWithoutIcon(
-                                context,
-                                validatorField: (value) {
+                        // (_code["code_screen"] == "new")
+                        //     ? SizedBox(
+                        //         height: 16,
+                        //       )
+                        //     : Container(),
+                        // SizedBox(
+                        //   height: 16,
+                        // ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        (_code["code_screen"] == "new")
+                            ? DropdownSearch<CategoryBusiness>(
+                                validator: (value) {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
                                 },
+                                // clearButtonProps: ClearButtonProps(isVisible: true),
+                                dropdownDecoratorProps:
+                                    dropDownDecoratorPropsWidget("Jenis Usaha"),
+                                asyncItems: (String filter) async {
+                                  CategoryService _dataCategoryBusiness =
+                                      await CategoryService();
+                                  return _dataCategoryBusiness
+                                      .getCategoryBusinessData(
+                                          category_id: _kategoriID!);
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    // _kategori = value!.title;
+                                    _kategoriBisnisID = value!.id;
+                                  });
+                                },
+                                popupProps:
+                                    PopupPropsMultiSelection.modalBottomSheet(
+                                  showSearchBox: true,
+                                  searchFieldProps: textFieldProps(),
+                                  showSelectedItems: false,
+                                  // showSearchBox: true,
+                                  itemBuilder: (context, item, isSelected) {
+                                    return itemDropdownBuilder(item.title!);
+                                  },
+                                ),
+                                itemAsString: (item) => item.title!,
+                              )
+                            : (_code["code_screen"] == "ro" ||
+                                    _code["source"] == "inbox")
+                                ? TextFieldWithoutIcon(
+                                    context,
+                                    validatorField: (value) {
+                                      if (value == null) {
+                                        return "Field Wajib Diisi";
+                                      }
+                                    },
+                                    // hintText: "Nama Usaha",
+                                    readOnlyText: true,
+                                    obsText: false,
+                                    // textController: _codePelanggan,
+                                    textController: _kategoriBisnis,
+                                    //   ..text = "Data USAHA",
+                                    label: "Jenis usaha",
+                                  )
+                                : Container(),
+                        (_code["source"] == "inbox" ||
+                                _code["code_screen"] == "ro")
+                            ? Container()
+                            : SizedBox(
+                                height: 16,
+                              ),
+
+                        // (_code["code_screen"] == "ro")
+                        //     ? TextFieldWithoutIcon(
+                        //         context,
+                        //         validatorField: (value) {
+                        //           if (value == null) {
+                        //             return "Field Wajib Diisi";
+                        //           }
+                        //         },
+                        //         // hintText: "Nama Usaha",
+                        //         readOnlyText: true,
+                        //         obsText: false,
+                        //         textController: _namaUsaha,
+                        //         // textController: TextEditingController()
+                        //         //   ..text = "Data USAHA",
+                        //         label: "Nama Usaha",
+                        //       )
+                        //     : Container(),
+                        (_code["code_screen"] == "new")
+                            ? TextFieldWithoutIcon(
+                                context,
+                                validatorField: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Field Wajib Diisi";
+                                  }
+                                },
                                 // hintText: "Nama Usaha",
+                                readOnlyText: (_code["code_screen"] == "ro" ||
+                                        _code["source"] == "inbox")
+                                    ? true
+                                    : false,
                                 obsText: false,
                                 textController: _namaUsaha,
-                                // textController: TextEditingController()
-                                //   ..text = "Data USAHA",
                                 label: "Nama Usaha",
                               )
+                            : SizedBox(
+                                height: 16,
+                              ),
+
+                        (_code["code_screen"] == "new")
+                            ? SizedBox(
+                                height: 16,
+                              )
                             : Container(),
-                        SizedBox(
-                          height: 16,
-                        ),
                         TextFieldWithoutIcon(
                           context,
                           validatorField: (value) {
-                            if (value == null) {
+                            if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
                           },
                           // hintText: "Nama Usaha",
-                          readOnlyText: (_codeScreen != "new") ? true : false,
+                          readOnlyText: (_code["code_screen"] == "ro" ||
+                                  _code["source"] == "inbox")
+                              ? true
+                              : false,
                           obsText: false,
                           textController: _namaPJ,
                           label: "Nama PJ",
@@ -418,12 +593,13 @@ class _AddCustomerState extends State<AddCustomer> {
                         TextFieldWithoutIcon(
                           context,
                           validatorField: (value) {
-                            if (value == null) {
+                            if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
                           },
                           // hintText: "Nama Usaha",
-                          readOnlyText: (_codeScreen != "new") ? true : false,
+                          readOnlyText:
+                              (_code["code_screen"] != "new") ? true : false,
                           obsText: false,
                           textController: _jabatanPJ,
                           label: "Jabatan PJ",
@@ -434,12 +610,13 @@ class _AddCustomerState extends State<AddCustomer> {
                         TextFieldWithoutIcon(
                           context,
                           validatorField: (value) {
-                            if (value == null) {
+                            if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
                           },
                           // hintText: "Nama Usaha",
-                          readOnlyText: (_codeScreen != "new") ? true : false,
+                          readOnlyText:
+                              (_code["code_screen"] != "new") ? true : false,
                           obsText: false,
                           textController: _noTelpPJ,
                           label: "No Telp PJ",
@@ -448,7 +625,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? DropdownSearch<Province>(
                                 validator: (value) {
                                   if (value == null) {
@@ -485,8 +662,9 @@ class _AddCustomerState extends State<AddCustomer> {
                             : TextFieldWithoutIcon(
                                 context,
                                 // hintText: "Nama Usaha",
-                                readOnlyText:
-                                    (_codeScreen != "new") ? true : false,
+                                readOnlyText: (_code["code_screen"] != "new")
+                                    ? true
+                                    : false,
                                 obsText: false,
                                 textController:
                                     TextEditingController(text: _provinsi),
@@ -495,7 +673,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? DropdownSearch<Regencies>(
                                 validator: (value) {
                                   if (value == null) {
@@ -531,8 +709,9 @@ class _AddCustomerState extends State<AddCustomer> {
                             : TextFieldWithoutIcon(
                                 context,
                                 // hintText: "Nama Usaha",
-                                readOnlyText:
-                                    (_codeScreen != "new") ? true : false,
+                                readOnlyText: (_code["code_screen"] != "new")
+                                    ? true
+                                    : false,
                                 obsText: false,
                                 textController:
                                     TextEditingController(text: _kota),
@@ -541,7 +720,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? DropdownSearch<Districts>(
                                 validator: (value) {
                                   if (value == null) {
@@ -578,8 +757,9 @@ class _AddCustomerState extends State<AddCustomer> {
                             : TextFieldWithoutIcon(
                                 context,
                                 // hintText: "Nama Usaha",
-                                readOnlyText:
-                                    (_codeScreen != "new") ? true : false,
+                                readOnlyText: (_code["code_screen"] != "new")
+                                    ? true
+                                    : false,
                                 obsText: false,
                                 textController:
                                     TextEditingController(text: _kecamatan),
@@ -588,7 +768,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? DropdownSearch<Villages>(
                                 validator: (value) {
                                   if (value == null) {
@@ -625,8 +805,9 @@ class _AddCustomerState extends State<AddCustomer> {
                             : TextFieldWithoutIcon(
                                 context,
                                 // hintText: "Nama Usaha",
-                                readOnlyText:
-                                    (_codeScreen != "new") ? true : false,
+                                readOnlyText: (_code["code_screen"] != "new")
+                                    ? true
+                                    : false,
                                 obsText: false,
                                 textController:
                                     TextEditingController(text: _kelurahan),
@@ -635,7 +816,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         SizedBox(
                           height: 16,
                         ),
-                        (_codeScreen == "new")
+                        (_code["code_screen"] == "new")
                             ? DropdownSearch<Regencies>(
                                 validator: (value) {
                                   if (value == null) {
@@ -672,8 +853,9 @@ class _AddCustomerState extends State<AddCustomer> {
                             : TextFieldWithoutIcon(
                                 context,
                                 // hintText: "Nama Usaha",
-                                readOnlyText:
-                                    (_codeScreen != "new") ? true : false,
+                                readOnlyText: (_code["code_screen"] != "new")
+                                    ? true
+                                    : false,
                                 obsText: false,
                                 textController:
                                     TextEditingController(text: _kota),
@@ -685,7 +867,7 @@ class _AddCustomerState extends State<AddCustomer> {
                         TextFieldWithoutIcon(
                           context,
                           validatorField: (value) {
-                            if (value == null) {
+                            if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
                           },
@@ -770,7 +952,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                 child: TextFieldWithoutIcon(
                                   context,
                                   validatorField: (value) {
-                                    if (value == null) {
+                                    if (value == null || value.isEmpty) {
                                       return "Field Wajib Diisi";
                                     }
                                   },
@@ -907,12 +1089,9 @@ class _AddCustomerState extends State<AddCustomer> {
                               if (_formKey.currentState!.validate()) {
                                 SharedPreferences _prefs =
                                     await SharedPreferences.getInstance();
-
-                                // _updateIsSubmitted(true);
-                                // Future.delayed(Duration(seconds: 5));
                                 CreatedDataModel _data = CreatedDataModel(
                                   user_id: _prefs.getString("user_id"),
-                                  category_business_id: _kategoriID,
+                                  category_business_id: _kategoriBisnisID,
                                   lokasi_gudang: _lokasiGudangID,
                                   nama_usaha: _namaUsaha.text,
                                   nama_pj: _namaPJ.text,
@@ -921,6 +1100,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   province_id: _provinsiID,
                                   kab_kota_id: _kotaID,
                                   kecamatan_id: _kecamatanID,
+                                  kelurahan_id: _kelurahanID,
                                   alamat_detail: _alamatDetail.text,
                                   harga: int.parse(_harga.text),
                                   jenis_uco: _jenisUCO,
@@ -928,12 +1108,29 @@ class _AddCustomerState extends State<AddCustomer> {
                                   quantity_kg: _quantityKg!,
                                   quantity_liter: _quantityLiter,
                                   kategori_status_id: _kategoriStatusID,
+                                  status_pelanggan: (_code["source"] == "inbox")
+                                      ? "E"
+                                      : (_code["code_screen"] == "ro")
+                                          ? "R"
+                                          : "",
+                                  pelanggan_code:
+                                      (_codePelanggan.text.isNotEmpty)
+                                          ? _codePelanggan.text
+                                          : null,
                                 );
-                                var compiling = _data.toJson();
-                                print("to JSON : " + jsonEncode(compiling));
-                                context
-                                    .read<CreatedDataCubit>()
-                                    .submittedData(compiling);
+                                if (_code["code_screen"] == "new") {
+                                  var compiling = _data.toJson();
+                                  print("to JSON : " + jsonEncode(compiling));
+                                  context
+                                      .read<CreatedDataCubit>()
+                                      .submittedData(compiling);
+                                } else {
+                                  var compiling = _data.toJsonRepeat();
+                                  print("to JSON : " + jsonEncode(compiling));
+                                  context
+                                      .read<CreatedDataCubit>()
+                                      .submittedDataRepeat(compiling);
+                                }
                               }
                             },
                             style: buttonStyleForForm.copyWith(

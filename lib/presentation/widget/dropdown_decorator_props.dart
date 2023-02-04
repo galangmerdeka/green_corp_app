@@ -9,7 +9,7 @@ DropDownDecoratorProps dropDownDecoratorPropsWidget(String label) {
       labelText: label,
       labelStyle: secondaryTextStyle,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
       ),
     ),
   );

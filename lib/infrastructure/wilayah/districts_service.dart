@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class DistrictsService {
   Future<List<Districts>> getDistrictsData(String regency_id) async {
-    Uri url = Uri.parse("${BASE_URL}//wilayah/getKecamatan");
+    Uri url = Uri.parse("${BASE_URL}wilayah/getKecamatan");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();

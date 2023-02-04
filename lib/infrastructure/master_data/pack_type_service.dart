@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class PackTypeService {
   Future<List<PackType>> getPackType() async {
-    Uri url = Uri.parse("${BASE_URL}//getPackType");
+    Uri url = Uri.parse("${BASE_URL}getPackType");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();

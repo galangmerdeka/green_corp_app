@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:green_corp_app/config/constant.dart';
-import 'package:green_corp_app/model/transaction.dart/get_customer_code.dart';
+import 'package:green_corp_app/model/transaction/get_customer_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class GetCustomerService {
   Future<List<GetCustomerCode>> getCustomerCodeAll() async {
-    Uri url = Uri.parse("${BASE_URL}//customer/get");
+    Uri url = Uri.parse("${BASE_URL}customer/get");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();
@@ -49,7 +49,7 @@ class GetCustomerService {
 
   Future<Either<String, List<GetCustomerCode>>> getCustomerCodeByCode(
       String customer_code) async {
-    Uri url = Uri.parse("${BASE_URL}//customer/get");
+    Uri url = Uri.parse("${BASE_URL}customer/get");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();

@@ -5,8 +5,10 @@ import 'package:green_corp_app/application/driver_task/cubit/driver_task_cubit.d
 // import 'package:green_corp_app/config/input_validation.dart';
 // import 'package:green_corp_app/infrastructure/driver/driver_service.dart';
 import 'package:green_corp_app/model/driver/pickup.dart';
+import 'package:green_corp_app/presentation/user/driver/form_reschedule.dart';
 import 'package:green_corp_app/presentation/user/driver/pickup_detail.dart';
 import 'package:green_corp_app/presentation/user/driver/task.dart';
+import 'package:green_corp_app/presentation/widget/loading_dialog_show.dart';
 import 'package:green_corp_app/presentation/widget/no_data_found.dart';
 import 'package:green_corp_app/presentation/widget/snackbar_custom.dart';
 import 'package:green_corp_app/presentation/widget/text_field.dart';
@@ -24,7 +26,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController rescheduleDate = TextEditingController();
+  // String dateNow = DateTime.now().toString();
+
+  // TextEditingController rescheduleDate = TextEditingController();
+  TextEditingController rescheduleNote = TextEditingController();
   return Column(
     children: [
       Container(
@@ -34,20 +39,7 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
             // TODO: implement listener
             if (state is DriverPickupStartLoading) {
               print("Sending Data Start Time...");
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Container(
-                      child: CircularProgressIndicator(),
-                    ),
-                    title: Text(
-                      "Loading...",
-                      style: secondaryTextStyle,
-                    ),
-                  );
-                },
-              );
+              // loadingDialogShow(context);
             } else if (state is DriverPickupStartError) {
               alertDialogErrorStart(context, state);
             } else if (state is DriverPickupStartSucces) {
@@ -77,6 +69,10 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                     physics: ScrollPhysics(),
                     // itemExtent: 120,
                     itemBuilder: (context, index) {
+                      DateTime pickupDate =
+                          DateTime.parse(_data[index]!.pickup_date!);
+                      final differenceDay =
+                          DateTime.now().difference(pickupDate).inDays;
                       return Container(
                         // color: Colors.green,
                         margin: EdgeInsets.symmetric(
@@ -182,6 +178,29 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                   height: 10,
                                 ),
                                 Container(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.schedule_rounded,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "${_data[index]!.pickup_date.toString()}",
+                                        style: primaryTextStyle.copyWith(
+                                          fontSize: 14,
+                                          fontWeight: regular,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
                                   // color: Colors.red,
                                   // width: double.infinity,
                                   padding: EdgeInsets.only(
@@ -251,8 +270,9 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                             ),
                                           ),
                                           onPressed: (_data[index]!
-                                                      .pickup_start_time !=
-                                                  null)
+                                                          .pickup_start_time !=
+                                                      null &&
+                                                  differenceDay >= 0)
                                               ? () {
                                                   // print("Clicked");
                                                   Get.toNamed(
@@ -300,16 +320,13 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                                           : "Cair",
                                                       "quantity_liter":
                                                           _data[index]!
-                                                              .quantity_liter
-                                                              .toString(),
+                                                              .quantity_liter,
                                                       "quantity_kg":
                                                           _data[index]!
-                                                              .quantity_kg
-                                                              .toString(),
+                                                              .quantity_kg,
                                                       "total_kemasan":
                                                           _data[index]!
-                                                              .total_kemasan
-                                                              .toString(),
+                                                              .total_kemasan,
                                                     },
                                                   );
                                                 }
@@ -341,154 +358,14 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                           ),
                                           onPressed: () {
                                             // print("Clicked");
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  scrollable: true,
-                                                  title: Text(
-                                                    "Form Reschedule",
-                                                    style: secondaryTextStyle,
-                                                  ),
-                                                  content: Padding(
-                                                    padding: EdgeInsets.all(8),
-                                                    child: Form(
-                                                      key: _formKey,
-                                                      child: Column(
-                                                        children: [
-                                                          TextFieldWidget(
-                                                            context,
-                                                            isReadOnly: true,
-                                                            iconField: Icons
-                                                                .date_range_rounded,
-                                                            obsText: false,
-                                                            textController:
-                                                                rescheduleDate,
-                                                            label:
-                                                                "Select Date",
-                                                            tap: () async {
-                                                              DateTime? picked =
-                                                                  await showDatePicker(
-                                                                context:
-                                                                    context,
-                                                                initialDate:
-                                                                    DateTime
-                                                                        .now(),
-                                                                firstDate: DateTime
-                                                                        .now()
-                                                                    .subtract(
-                                                                  Duration(
-                                                                      days: 0),
-                                                                ),
-                                                                lastDate:
-                                                                    DateTime(
-                                                                        2100),
-                                                              );
-                                                              if (picked !=
-                                                                  null) {
-                                                                String
-                                                                    formattedDate =
-                                                                    DateFormat(
-                                                                            'yyyy-MM-dd')
-                                                                        .format(
-                                                                            picked);
-
-                                                                rescheduleDate
-                                                                        .text =
-                                                                    formattedDate;
-                                                                // print(
-                                                                //   "Date : " +
-                                                                //       rescheduleDate
-                                                                //           .text,
-                                                                // );
-                                                              }
-                                                            },
-                                                            validatorField:
-                                                                (value) {
-                                                              if (value!
-                                                                  .isEmpty) {
-                                                                return "Tanggal wajib diisi";
-                                                              }
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        ElevatedButton(
-                                                          style:
-                                                              buttonStyleForForm
-                                                                  .copyWith(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                              buttonColorGrey,
-                                                            ),
-                                                          ),
-                                                          onPressed: () =>
-                                                              Get.back(),
-                                                          child: Text(
-                                                            "Cancel",
-                                                            style:
-                                                                secondaryTextStyle,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            if (_formKey
-                                                                .currentState!
-                                                                .validate()) {
-                                                              // print("Data Trans ID: " +
-                                                              //     _data[index]!.id!);
-                                                              // print("Date : " +
-                                                              //     rescheduleDate.text);
-
-                                                              context
-                                                                  .read<
-                                                                      DriverPickupCubit>()
-                                                                  .rescheduleRequest(
-                                                                    _data[index]!
-                                                                        .id!,
-                                                                    rescheduleDate
-                                                                        .text,
-                                                                  );
-                                                            }
-                                                          },
-                                                          child: (state
-                                                                  is DriverRescheduleLoading)
-                                                              ? Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(),
-                                                                )
-                                                              : Text(
-                                                                  "Submit",
-                                                                  style:
-                                                                      secondaryTextStyle,
-                                                                ),
-                                                          style:
-                                                              buttonStyleForForm
-                                                                  .copyWith(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(
-                                                              buttonColor,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                );
-                                              },
+                                            formReschedule(
+                                              context,
+                                              _formKey,
+                                              // rescheduleDate,
+                                              rescheduleNote,
+                                              _data,
+                                              index,
+                                              state,
                                             );
                                           },
                                           icon: Icon(

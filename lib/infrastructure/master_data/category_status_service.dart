@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class CategoryStatusService {
   Future<List<CategoryStatus>> getCategoryStatusData({String category_name = ""}) async {
-    Uri url = Uri.parse("${BASE_URL}//getStatusCategory");
+    Uri url = Uri.parse("${BASE_URL}getStatusCategory");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     var mapHeaders = new Map<String, String>();

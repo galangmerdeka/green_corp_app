@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:green_corp_app/application/history/cubit/history_cubit.dart';
+import 'package:green_corp_app/application/inbox/cubit/inbox_cubit.dart';
 import 'package:green_corp_app/presentation/user/ro/inbox.dart';
 import 'package:green_corp_app/presentation/user/ro/repeat_customer.dart';
 import 'package:green_corp_app/presentation/user/ro/ro_history.dart';
@@ -67,7 +68,9 @@ class ROHome extends StatelessWidget {
                       menu_ro_widget(_menuList, 0, () {
                         Get.toNamed(
                           _menuList[0]["route"],
-                          arguments: _menuList[0]["code"].toString(),
+                          arguments: {
+                            "code_screen": _menuList[0]["code"].toString()
+                          },
                         );
                       }),
                       SizedBox(
@@ -76,7 +79,9 @@ class ROHome extends StatelessWidget {
                       menu_ro_widget(_menuList, 1, () {
                         Get.toNamed(
                           _menuList[1]["route"],
-                          arguments: _menuList[1]["code"].toString(),
+                          arguments: {
+                            "code_screen": _menuList[1]["code"].toString()
+                          },
                         );
                       }),
                       SizedBox(
@@ -86,16 +91,15 @@ class ROHome extends StatelessWidget {
                         context.read<HistoryCubit>().getHistory();
                         Get.toNamed(
                           _menuList[2]["route"],
-                          arguments: _menuList[2]["code"].toString(),
                         );
                       }),
                       SizedBox(
                         height: 20,
                       ),
                       menu_ro_widget(_menuList, 3, () {
+                        context.read<InboxCubit>().getInbox();
                         Get.toNamed(
                           _menuList[3]["route"],
-                          arguments: _menuList[3]["code"].toString(),
                         );
                       }),
                     ],
