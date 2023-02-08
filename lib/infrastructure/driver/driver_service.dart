@@ -51,7 +51,8 @@ class DriverService {
       }
       return right(modelDatatask);
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 
@@ -83,7 +84,8 @@ class DriverService {
       }
       return right("Sending Start Time Success");
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 
@@ -120,7 +122,8 @@ class DriverService {
       }
       return right("Reschedule Request Submitted");
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 
@@ -159,7 +162,8 @@ class DriverService {
       }
       return right("Data Has Been Submitted");
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 }

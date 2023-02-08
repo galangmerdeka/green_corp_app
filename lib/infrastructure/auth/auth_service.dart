@@ -42,7 +42,8 @@ class AuthServiceRepository {
         return right(user);
       }
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 }

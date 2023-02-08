@@ -36,7 +36,8 @@ class AddData {
       }
       return right("Data Submitted");
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 
@@ -69,7 +70,8 @@ class AddData {
       }
       return right("Data Submitted");
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 }

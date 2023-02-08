@@ -44,7 +44,8 @@ class GetInbox {
       listDataInbox = InboxData.fromJsonList(dataInbox["data"]);
       return right(listDataInbox);
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 
@@ -78,7 +79,8 @@ class GetInbox {
 
       return right(dataInbox["message"]);
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 }

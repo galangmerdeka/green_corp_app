@@ -56,7 +56,8 @@ class GetTransaction {
       // }
       return right(listDataHistory);
     } catch (e) {
-      return left(e.toString());
+      print(e.toString());
+      return left(ERROR_SYSTEM);
     }
   }
 }
