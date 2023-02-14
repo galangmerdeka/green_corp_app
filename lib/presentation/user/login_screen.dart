@@ -29,8 +29,9 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController =
-      TextEditingController(text: "GreenCorp100%!");
+  // TextEditingController _passwordController =
+  //     TextEditingController(text: "GreenCorp100%!");
+  TextEditingController _passwordController = TextEditingController();
   int loginFailedCounter = 0;
 
   loading() async {

@@ -124,9 +124,13 @@ class InboxPage extends StatelessWidget {
                 builder: (context, state) {
                   return GestureDetector(
                     // splashColor: ,
-                    onTap: (_data!.status_category_code == "A6")
+                    onTap: (_data!.status_category_code == "A6" ||
+                            _data.status_category_code == "A1")
                         ? () => alertDialogStatusA6(
-                            context, INBOX_ERROR_MESSAGE_KODE_STATUS_A6)
+                            context,
+                            ((_data.status_category_code == "A6")
+                                ? INBOX_ERROR_MESSAGE_KODE_STATUS_A6
+                                : INBOX_ERROR_MESSAGE_KODE_STATUS_A1))
                         : () async {
                             print(index);
                             context

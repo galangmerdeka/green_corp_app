@@ -15,7 +15,7 @@ class CreatedDataModel {
   String? jenis_uco;
   String? kemasan_id;
   double quantity_kg = 0.0;
-  int quantity_liter = 0;
+  double quantity_liter = 0.0;
   String? kategori_status_id;
   String? status_pelanggan;
   String? pelanggan_code;

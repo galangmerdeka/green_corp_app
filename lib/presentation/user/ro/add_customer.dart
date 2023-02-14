@@ -89,7 +89,7 @@ class _AddCustomerState extends State<AddCustomer> {
   TextEditingController _keterangan = TextEditingController();
   TextEditingController _harga = TextEditingController(text: "0");
   String? _jenisUCO;
-  int _quantityLiter = 0;
+  double _quantityLiter = 0.0;
   String _defaultQtyLiter = "0";
   double? _quantityKg;
   String _defaultQtyKg = "0";
@@ -101,10 +101,17 @@ class _AddCustomerState extends State<AddCustomer> {
   String? usertype;
   TextEditingController? _kategori;
   TextEditingController? _kategoriBisnis;
+  int _valueRadio = 0;
 
   void _updateQuantityKg(value) {
     setState(() {
       _quantityKg = value;
+    });
+  }
+
+  void _updateQuantityLt(value) {
+    setState(() {
+      _quantityLiter = value;
     });
   }
 
@@ -488,7 +495,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                 onChanged: (value) {
                                   setState(() {
                                     // _kategori = value!.title;
-                                    _kategoriBisnisID = value!.id;
+                                    print(value!.id);
+                                    _kategoriBisnisID = value.id;
                                   });
                                 },
                                 popupProps:
@@ -941,76 +949,217 @@ class _AddCustomerState extends State<AddCustomer> {
                                 itemAsString: (item) => item.title!,
                               )
                             : Container(),
-                        Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  right: 17.5,
-                                ),
-                                child: TextFieldWithoutIcon(
-                                  context,
-                                  validatorField: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Field Wajib Diisi";
-                                    }
-                                  },
-                                  obsText: false,
-                                  // initValue: _defaultQtyLiter,
-                                  readOnlyText:
-                                      (_jenisUCO == "N") ? true : false,
-                                  textController: (_jenisUCO == "N")
-                                      ? TextEditingController(
-                                          text: _defaultQtyLiter)
-                                      : null,
-                                  label: "Quantity/Lt",
-                                  // initValue: _quantityLiter.toString(),
-                                  inputType: TextInputType.numberWithOptions(
-                                      decimal: false),
-                                  // contentPrefixText: "Kg",
-                                  convertValueOnChanged: (val) {
-                                    double res_convert = objKonversi
-                                        .getKonversiLtToKg(int.parse(val!));
-                                    setState(
-                                      () {
-                                        // _updateQuantityLt(val);
-                                        _updateQuantityKg(res_convert);
-                                        _quantityLiter = int.tryParse(val)!;
-                                      },
-                                    );
-                                    // print("Liter : ${_quantityLiter.toString()}");
-                                    // print(
-                                    //     "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
-                                // color: Colors.red,
-                                margin: EdgeInsets.only(
-                                  left: 5,
-                                ),
+                        // Radio Button Mode Konversi
+                        (_jenisUCO != "N")
+                            ? Container(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text(
-                                      "Quantity/Kg",
+                                    ListTile(
+                                      leading: Radio(
+                                        value: 0,
+                                        groupValue: _valueRadio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _valueRadio = value!;
+                                            _quantityKg = 0.0;
+                                            _quantityLiter = 0;
+                                          });
+                                        },
+                                      ),
+                                      title: Text("Mode Konversi Lt-Kg"),
                                     ),
-                                    Text(
-                                        "${(_quantityKg != null) ? _quantityKg.toString() : 0}")
+                                    ListTile(
+                                      leading: Radio(
+                                        value: 1,
+                                        groupValue: _valueRadio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _valueRadio = value!;
+                                            _quantityKg = 0.0;
+                                            _quantityLiter = 0;
+                                          });
+                                        },
+                                      ),
+                                      title: Text("Mode Konversi Kg-Lt"),
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
+                              )
+                            : Container(),
+                        (_jenisUCO != "N")
+                            ? (_valueRadio == 0)
+                                ? Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                            right: 17.5,
+                                          ),
+                                          child: TextFieldWithoutIcon(
+                                            context,
+                                            validatorField: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return "Field Wajib Diisi";
+                                              }
+                                            },
+                                            obsText: false,
+                                            // initValue: _defaultQtyLiter,
+                                            readOnlyText: (_jenisUCO == "N")
+                                                ? true
+                                                : false,
+                                            textController: (_jenisUCO == "N")
+                                                ? TextEditingController(
+                                                    text: _defaultQtyLiter)
+                                                : null,
+                                            label: "Quantity/Lt",
+                                            // initValue: _quantityLiter.toString(),
+                                            inputType:
+                                                TextInputType.numberWithOptions(
+                                                    decimal: false),
+                                            // contentPrefixText: "Kg",
+                                            convertValueOnChanged: (val) {
+                                              if (val!.isEmpty) {
+                                                val = "0";
+                                              }
+                                              double res_convert =
+                                                  objKonversi.getKonversiLtToKg(
+                                                      double.parse(val));
+                                              setState(
+                                                () {
+                                                  // _updateQuantityLt(val);
+
+                                                  _updateQuantityKg(
+                                                      res_convert);
+                                                  _quantityLiter =
+                                                      double.tryParse(val!)!;
+                                                },
+                                              );
+                                              // print("Liter : ${_quantityLiter.toString()}");
+                                              // print(
+                                              //     "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.1,
+                                          // color: Colors.red,
+                                          margin: EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                "Quantity/Kg",
+                                              ),
+                                              Text(
+                                                  "${(_quantityKg != null) ? _quantityKg.toString() : 0}")
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                :
+                                // Mode Konversi Kg-Lt
+                                Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                            right: 17.5,
+                                          ),
+                                          child: TextFieldWithoutIcon(
+                                            context,
+                                            validatorField: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return "Field Wajib Diisi";
+                                              }
+                                            },
+                                            obsText: false,
+                                            // initValue: _defaultQtyLiter,
+                                            readOnlyText: (_jenisUCO == "N")
+                                                ? true
+                                                : false,
+                                            textController: (_jenisUCO == "N")
+                                                ? TextEditingController(
+                                                    text: _defaultQtyKg)
+                                                : null,
+                                            label: "Quantity/Kg",
+                                            // initValue: _quantityLiter.toString(),
+                                            inputType:
+                                                TextInputType.numberWithOptions(
+                                                    decimal: false),
+                                            // contentPrefixText: "Kg",
+                                            convertValueOnChanged: (val) {
+                                              if (val!.isEmpty) {
+                                                val = "0";
+                                              }
+                                              double res_convert =
+                                                  objKonversi.getKonversiKgToLt(
+                                                      double.parse(val));
+                                              setState(
+                                                () {
+                                                  // _updateQuantityLt(val);
+
+                                                  _updateQuantityLt(
+                                                      res_convert);
+                                                  _quantityKg =
+                                                      double.tryParse(val!)!;
+                                                },
+                                              );
+                                              // print("Liter : ${_quantityLiter.toString()}");
+                                              // print(
+                                              //     "Konversi Lt ke Kg : ${_quantityKg!.toStringAsFixed(1)}");
+                                              return null;
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.1,
+                                          // color: Colors.red,
+                                          margin: EdgeInsets.only(
+                                            left: 5,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                "Quantity/Lt",
+                                              ),
+                                              Text(
+                                                  "${(_quantityLiter != 0) ? _quantityLiter.toString() : 0}")
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                            : Container(),
+
                         TextFieldWithoutIcon(
                           context,
                           validatorField: (value) {
