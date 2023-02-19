@@ -88,15 +88,15 @@ class InboxPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final _data = dataInbox[index];
               return BlocConsumer<CheckStatusCubit, CheckStatusState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   // TODO: implement listener
                   if (state is InboxLoadingCheckStatus) {
                     print("Loading Check Status...");
-                    loadingDialogShow(context);
+                    // loadingDialogShow(context);
                   } else if (state is InboxCheckStatusError) {
                     alertDialogStatusA6(context, state.errMessage);
                   } else if (state is InboxCheckStatusSuccess) {
-                    Get.offAndToNamed(
+                    Get.toNamed(
                       AddCustomer.routeName,
                       arguments: {
                         "source": "inbox",
@@ -124,9 +124,13 @@ class InboxPage extends StatelessWidget {
                 builder: (context, state) {
                   return GestureDetector(
                     // splashColor: ,
-                    onTap: (_data!.status_category_code == "A6")
+                    onTap: (_data!.status_category_code == "A6" ||
+                            _data.status_category_code == "A1")
                         ? () => alertDialogStatusA6(
-                            context, INBOX_ERROR_MESSAGE_KODE_STATUS_A6)
+                            context,
+                            ((_data.status_category_code == "A6")
+                                ? INBOX_ERROR_MESSAGE_KODE_STATUS_A6
+                                : INBOX_ERROR_MESSAGE_KODE_STATUS_A1))
                         : () async {
                             print(index);
                             context

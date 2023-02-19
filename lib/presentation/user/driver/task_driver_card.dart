@@ -71,8 +71,12 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                     itemBuilder: (context, index) {
                       DateTime pickupDate =
                           DateTime.parse(_data[index]!.pickup_date!);
+                      // print(pickupDate);
+                      var dateNow =
+                          DateFormat('yyyy-MM-dd').format(DateTime.now());
                       final differenceDay =
-                          DateTime.now().difference(pickupDate).inDays;
+                          DateTime.parse(dateNow).difference(pickupDate).inDays;
+                      // print("days : " + differenceDay.toString());
                       return Container(
                         // color: Colors.green,
                         margin: EdgeInsets.symmetric(
@@ -216,13 +220,20 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                         child: ElevatedButton.icon(
                                           style: ButtonStyle(
                                             // MaterialStateProperty<Color?>?
-                                            backgroundColor:
-                                                MaterialStatePropertyAll((_data[
-                                                                index]!
-                                                            .pickup_start_time !=
-                                                        null)
-                                                    ? buttonColorGrey
-                                                    : buttonColor),
+                                            backgroundColor: MaterialStatePropertyAll(
+                                                (differenceDay == 0)
+                                                    ? (_data[index]!
+                                                                .pickup_start_time !=
+                                                            null)
+                                                        ? buttonColorGrey
+                                                        : buttonColor
+                                                    : buttonColorGrey
+                                                // (_data[index]!
+                                                //             .pickup_start_time !=
+                                                //         null)
+                                                //     ? buttonColorGrey
+                                                //     : buttonColor,
+                                                ),
                                           ),
                                           label: Text(
                                             "Start Time",
@@ -230,16 +241,20 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                               color: primaryColor,
                                             ),
                                           ),
-                                          onPressed: (_data[index]!
-                                                      .pickup_start_time !=
-                                                  null)
-                                              ? null
-                                              : () async {
-                                                  context
-                                                      .read<DriverPickupCubit>()
-                                                      .startPickupByTransID(
-                                                          _data[index]!.id!);
-                                                },
+                                          onPressed: (differenceDay == 0)
+                                              ? (_data[index]!
+                                                          .pickup_start_time !=
+                                                      null)
+                                                  ? null
+                                                  : () async {
+                                                      context
+                                                          .read<
+                                                              DriverPickupCubit>()
+                                                          .startPickupByTransID(
+                                                            _data[index]!.id!,
+                                                          );
+                                                    }
+                                              : null,
                                           icon: Icon(
                                             Icons.access_time_filled_sharp,
                                             size: 20,
@@ -255,13 +270,20 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                         child: ElevatedButton.icon(
                                           style: ButtonStyle(
                                             // MaterialStateProperty<Color?>?
-                                            backgroundColor:
-                                                MaterialStatePropertyAll((_data[
-                                                                index]!
-                                                            .pickup_start_time !=
-                                                        null)
-                                                    ? buttonColor
-                                                    : buttonColorGrey),
+                                            backgroundColor: MaterialStatePropertyAll(
+                                                (differenceDay == 0)
+                                                    ? (_data[index]!
+                                                                .pickup_start_time ==
+                                                            null)
+                                                        ? buttonColorGrey
+                                                        : buttonColor
+                                                    : buttonColorGrey
+                                                // (_data[index]!
+                                                //             .pickup_start_time !=
+                                                //         null)
+                                                //     ? buttonColor
+                                                //     : buttonColorGrey,
+                                                ),
                                           ),
                                           label: Text(
                                             "Pickup",
@@ -272,7 +294,7 @@ Column taskDriverCard(BuildContext context, List<PickupModel?> _data) {
                                           onPressed: (_data[index]!
                                                           .pickup_start_time !=
                                                       null &&
-                                                  differenceDay >= 0)
+                                                  differenceDay == 0)
                                               ? () {
                                                   // print("Clicked");
                                                   Get.toNamed(

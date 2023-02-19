@@ -16,7 +16,7 @@ TextStyle primaryTextStyle = GoogleFonts.inter();
 TextStyle secondaryTextStyle = GoogleFonts.robotoCondensed();
 
 FontWeight light = FontWeight.w300;
-FontWeight regular = FontWeight.w400; 
+FontWeight regular = FontWeight.w400;
 FontWeight medium = FontWeight.w500;
 FontWeight semiBold = FontWeight.w600;
 FontWeight bold = FontWeight.w700;
@@ -61,7 +61,7 @@ BoxDecoration mainLogoDecoration = BoxDecoration(
 BoxDecoration bgHeaderDecoration = BoxDecoration(
   image: DecorationImage(
     image: AssetImage(
-      'assets/images/bg_header.png',
+      'assets/images/bg_header.jpg',
     ),
   ),
 );

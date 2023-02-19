@@ -27,10 +27,12 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> with InputValidation {
   bool isLoading = false;
+  bool obsText = true;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController =
-      TextEditingController(text: "GreenCorp100%!");
+  // TextEditingController _passwordController =
+  //     TextEditingController(text: "GreenCorp100%!");
+  TextEditingController _passwordController = TextEditingController();
   int loginFailedCounter = 0;
 
   loading() async {
@@ -38,6 +40,12 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
       Duration(seconds: 10),
     );
     isLoading = false;
+  }
+
+  void updateObsText() {
+    setState(() {
+      obsText = !obsText;
+    });
   }
 
   updateLoginFailedCounter() {
@@ -133,7 +141,15 @@ class _LoginScreenState extends State<LoginScreen> with InputValidation {
                               context,
                               iconField: Icons.lock_rounded,
                               // hintText: "Password",
-                              obsText: true,
+                              obsText: obsText,
+                              suffix: IconButton(
+                                onPressed: updateObsText,
+                                icon: Icon(
+                                  (obsText)
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                              ),
                               textController: _passwordController,
                               label: "Password",
                               validatorField: (value) {

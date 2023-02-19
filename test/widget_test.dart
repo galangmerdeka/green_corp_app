@@ -5,6 +5,8 @@
 // import 'package:http/http.dart' as http;
 // import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:intl/intl.dart';
+
 void main() {
   // SharedPreferences prefs = await SharedPreferences.getInstance();
   // cekSession();
@@ -18,6 +20,12 @@ void main() {
   // } else {
   //   print(false);
   // }
+  var pickupDate = DateTime.parse('2023-02-17');
+  var dateNow = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  final diff = DateTime.parse(dateNow).difference(pickupDate).inDays;
+  print(dateNow);
+  print(diff);
 }
 
 // Future<bool> cekSession() async {

@@ -13,6 +13,7 @@ Widget TextFieldWidget(
   String? Function(String?)? savedData,
   Future<String?> Function()? tap,
   bool isReadOnly = false,
+  IconButton? suffix,
 }) {
   return TextFormField(
     validator: validatorField,
@@ -32,6 +33,7 @@ Widget TextFieldWidget(
         iconField,
         color: thirdTextColor,
       ),
+      suffixIcon: suffix,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
       ),
