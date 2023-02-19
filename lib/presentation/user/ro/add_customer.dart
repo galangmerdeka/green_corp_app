@@ -629,6 +629,7 @@ class _AddCustomerState extends State<AddCustomer> {
                           textController: _noTelpPJ,
                           label: "No Telp PJ",
                           inputType: TextInputType.phone,
+                          maximumLength: 13,
                         ),
                         SizedBox(
                           height: 16,

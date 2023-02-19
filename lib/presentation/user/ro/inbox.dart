@@ -88,15 +88,15 @@ class InboxPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final _data = dataInbox[index];
               return BlocConsumer<CheckStatusCubit, CheckStatusState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   // TODO: implement listener
                   if (state is InboxLoadingCheckStatus) {
                     print("Loading Check Status...");
-                    loadingDialogShow(context);
+                    // loadingDialogShow(context);
                   } else if (state is InboxCheckStatusError) {
                     alertDialogStatusA6(context, state.errMessage);
                   } else if (state is InboxCheckStatusSuccess) {
-                    Get.offAndToNamed(
+                    Get.toNamed(
                       AddCustomer.routeName,
                       arguments: {
                         "source": "inbox",

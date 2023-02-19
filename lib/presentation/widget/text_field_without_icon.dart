@@ -16,9 +16,11 @@ Widget TextFieldWithoutIcon(
   String? Function(String?)? convertValueOnChanged,
   String? initValue,
   String? Function(String?)? validatorField,
+  int? maximumLength,
 }) {
   return TextFormField(
     initialValue: initValue,
+    maxLength: maximumLength,
     validator: validatorField,
     onChanged: convertValueOnChanged,
     keyboardType: inputType,
