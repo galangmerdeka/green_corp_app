@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:green_corp_app/application/driver_pickup_start/cubit/driver_pickup_start_cubit.dart';
 import 'package:green_corp_app/model/driver/pickup.dart';
-import 'package:green_corp_app/presentation/widget/text_field.dart';
+// import 'package:green_corp_app/presentation/widget/text_field.dart';
 import 'package:green_corp_app/presentation/widget/text_field_without_icon.dart';
 import 'package:green_corp_app/theme.dart';
 import 'package:get/get.dart';
@@ -72,6 +72,7 @@ Future<dynamic> formReschedule(
                     if (value!.isEmpty) {
                       return "Alasan wajib diisi";
                     }
+                    return null;
                   },
                 ),
               ],
