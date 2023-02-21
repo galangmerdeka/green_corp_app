@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 Color primaryColor = Color(0xffF1F0F2);
 Color buttonColor = Color(0xff8DB403);
@@ -12,8 +12,10 @@ Color thirdTextColor = Color(0xff1F1D2B);
 Color fieldBackground = Color(0xffF8F8F8);
 Color fourthColorGrey = Color(0xff8E8E8B);
 
-TextStyle primaryTextStyle = GoogleFonts.inter();
-TextStyle secondaryTextStyle = GoogleFonts.robotoCondensed();
+// TextStyle primaryTextStyle = GoogleFonts.inter();
+TextStyle primaryTextStyle = TextStyle(fontFamily: 'Inter');
+// TextStyle secondaryTextStyle = GoogleFonts.robotoCondensed();
+TextStyle secondaryTextStyle = TextStyle(fontFamily: 'RobotoCondensed');
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;
