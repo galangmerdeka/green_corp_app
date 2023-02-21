@@ -309,6 +309,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 // hintText: "Nama Usaha",
                                 readOnlyText: true,
@@ -331,6 +332,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       if (value == null) {
                                         return "Field Wajib Diisi";
                                       }
+                                      return null;
                                     },
                                     // hintText: "Nama Usaha",
                                     readOnlyText: true,
@@ -346,6 +348,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                           if (value == null) {
                                             return "Field Wajib Diisi";
                                           }
+                                          return null;
                                         },
                                         // clearButtonProps: ClearButtonProps(isVisible: true),
                                         dropdownDecoratorProps:
@@ -422,6 +425,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 // clearButtonProps: ClearButtonProps(isVisible: true),
                                 dropdownDecoratorProps:
@@ -455,6 +459,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 // hintText: "Nama Usaha",
                                 readOnlyText: true,
@@ -481,6 +486,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 // clearButtonProps: ClearButtonProps(isVisible: true),
                                 dropdownDecoratorProps:
@@ -519,6 +525,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                       if (value == null) {
                                         return "Field Wajib Diisi";
                                       }
+                                      return null;
                                     },
                                     // hintText: "Nama Usaha",
                                     readOnlyText: true,
@@ -560,6 +567,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null || value.isEmpty) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 // hintText: "Nama Usaha",
                                 readOnlyText: (_code["code_screen"] == "ro" ||
@@ -585,6 +593,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           // hintText: "Nama Usaha",
                           readOnlyText: (_code["code_screen"] == "ro" ||
@@ -604,6 +613,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           // hintText: "Nama Usaha",
                           readOnlyText:
@@ -621,6 +631,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           // hintText: "Nama Usaha",
                           readOnlyText:
@@ -640,6 +651,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 // clearButtonProps: ClearButtonProps(isVisible: true),
                                 dropdownDecoratorProps:
@@ -688,6 +700,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 dropdownDecoratorProps:
                                     dropDownDecoratorPropsWidget("Kota"),
@@ -735,6 +748,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 dropdownDecoratorProps:
                                     dropDownDecoratorPropsWidget("Kecamatan"),
@@ -783,6 +797,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 dropdownDecoratorProps:
                                     dropDownDecoratorPropsWidget("Kelurahan"),
@@ -831,6 +846,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 dropdownDecoratorProps:
                                     dropDownDecoratorPropsWidget(
@@ -879,6 +895,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null || value.isEmpty) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           // hintText: "Nama Usaha",
                           obsText: false,
@@ -895,6 +912,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           itemList: ['Padat', 'Cair', 'No UCO'],
                           labelField: "Jenis UCO",
@@ -923,6 +941,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                   if (value == null) {
                                     return "Field Wajib Diisi";
                                   }
+                                  return null;
                                 },
                                 dropdownDecoratorProps:
                                     dropDownDecoratorPropsWidget("Kemasan"),
@@ -1006,6 +1025,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                   value.isEmpty) {
                                                 return "Field Wajib Diisi";
                                               }
+                                              return null;
                                             },
                                             obsText: false,
                                             // initValue: _defaultQtyLiter,
@@ -1091,6 +1111,7 @@ class _AddCustomerState extends State<AddCustomer> {
                                                   value.isEmpty) {
                                                 return "Field Wajib Diisi";
                                               }
+                                              return null;
                                             },
                                             obsText: false,
                                             // initValue: _defaultQtyLiter,
@@ -1167,6 +1188,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           // hintText: "Nama Usaha",
                           obsText: false,
@@ -1183,6 +1205,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             if (value == null) {
                               return "Field Wajib Diisi";
                             }
+                            return null;
                           },
                           dropdownDecoratorProps:
                               dropDownDecoratorPropsWidget("Kategori Status"),

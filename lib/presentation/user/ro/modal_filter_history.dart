@@ -66,6 +66,7 @@ class _modalFilterHistoryState extends State<modalFilterHistory> {
                       _filterDate = TextEditingController(text: formattedDate);
                     });
                   }
+                  return null;
                 },
               ),
               SizedBox(
