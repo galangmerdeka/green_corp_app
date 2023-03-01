@@ -13,4 +13,5 @@ String INBOX_ERROR_MESSAGE_KODE_STATUS_A6 =
 String ERROR_SYSTEM = "Oopss.. Terjadi Kesalahan";
 
 // Development
-String BASE_URL = "http://117.53.144.159:81/";
+// String BASE_URL = "http://117.53.144.159:81/";
+String BASE_URL = "http://api.linpmbd.my.id//";
