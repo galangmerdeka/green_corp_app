@@ -375,7 +375,8 @@ class _AddCustomerState extends State<AddCustomer> {
                                             _namaUsaha = TextEditingController(
                                                 text: value.nama_usaha);
                                             _kategori = TextEditingController(
-                                                text: value.kategori);
+                                                text: value
+                                                    .kategori!.category_title);
                                             _namaPJ = TextEditingController(
                                                 text: value.nama_pj);
                                             _jabatanPJ = TextEditingController(
@@ -385,18 +386,22 @@ class _AddCustomerState extends State<AddCustomer> {
                                             _alamatDetail =
                                                 TextEditingController(
                                                     text: value.alamat);
-                                            _provinsi = value.provinsi;
+                                            _provinsi =
+                                                value.provinsi!.province_name;
                                             _provinsiID =
                                                 int.parse(value.provinsi_id!);
-                                            _kota = value.kabupaten_kota;
+                                            _kota = value
+                                                .kabupaten_kota!.kab_kota_name;
                                             _kotaID = int.parse(
                                                 value.kabupaten_kota_id!);
-                                            _kecamatan = value.kecamatan;
+                                            _kecamatan =
+                                                value.kecamatan!.kecamatan_name;
                                             _kecamatanID =
                                                 int.parse(value.kecamatan_id!);
                                             _kategoriBisnis =
                                                 TextEditingController(
-                                                    text: value.kategoriBisnis);
+                                                    text: value.kategoriBisnis!
+                                                        .category_business_title);
                                             // _kelurahan = "Kemayoran";
                                           });
                                         },
